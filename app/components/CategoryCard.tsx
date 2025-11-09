@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 export type CategoryCardProps = {
@@ -15,10 +16,11 @@ export default function CategoryCard({ name, slug, img, href }: CategoryCardProp
       aria-label={`View ${name} category`}
       className="group block overflow-hidden rounded-lg border border-black/5 bg-white shadow-sm hover:shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
     >
-      <div className="relative aspect-[3/2] w-full bg-zinc-100">
-        <img
+      <div className="relative aspect-3/2 w-full bg-zinc-100">
+        <Image
           src={img}
           alt={name}
+          layout="fill"
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
         />

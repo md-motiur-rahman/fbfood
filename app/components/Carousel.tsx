@@ -106,18 +106,15 @@ export default function Carousel({
               <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
               <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-black/25 via-transparent to-black/10" />
 
-              {/* Single CTA button */}
-              <div className="relative z-10 h-full w-full p-5 sm:p-8 md:p-12 flex items-end">
+              {/* Single CTA button centered */}
+              <div className="absolute inset-0 z-10 grid place-items-center p-5 sm:p-8 md:p-12">
                 <a
                   href={s.href}
-                  className="inline-flex h-11 items-center rounded-full bg-amber-500 px-6 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400"
+                  className="inline-flex h-12 md:h-14 items-center rounded-full bg-amber-500/95 backdrop-blur px-6 md:px-8 text-base md:text-lg font-semibold text-zinc-900 shadow-lg hover:bg-amber-400"
                 >
                   {buttonLabel}
                 </a>
-                {/* Keep hidden text for accessibility/SEO */}
-                {s.title ? (
-                  <span className="sr-only">{s.title}</span>
-                ) : null}
+                {s.title ? <span className="sr-only">{s.title}</span> : null}
               </div>
             </div>
           ))}
@@ -127,16 +124,16 @@ export default function Carousel({
         <button
           aria-label="Previous slide"
           onClick={prev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 grid h-9 w-9 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
+          className="absolute left-3 bottom-5 sm:left-4 sm:top-1/2 sm:-translate-y-1/2 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
         >
-          <span className="-mt-0.5 text-lg">‹</span>
+          <span className="-mt-0.5 text-xl sm:text-2xl">‹</span>
         </button>
         <button
           aria-label="Next slide"
           onClick={next}
-          className="absolute right-4 top-1/2 -translate-y-1/2 grid h-9 w-9 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
+          className="absolute right-3 bottom-5 sm:right-4 sm:top-1/2 sm:-translate-y-1/2 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
         >
-          <span className="-mt-0.5 text-lg">›</span>
+          <span className="-mt-0.5 text-xl sm:text-2xl">›</span>
         </button>
 
         {/* Progress */}
@@ -150,7 +147,7 @@ export default function Carousel({
         )}
 
         {/* Dots */}
-        <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2">
+        <div className="absolute bottom-4 sm:bottom-3 left-0 right-0 flex justify-center gap-2">
           {items.map((_, i) => (
             <button
               key={i}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 
 export type ProductCardProps = {
@@ -22,10 +23,11 @@ export default function ProductCard({
 }: ProductCardProps) {
   return (
     <article className="group overflow-hidden rounded-xl border border-black/5 bg-white shadow-sm hover:shadow-md transition-shadow">
-      <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden bg-zinc-100">
-        <img
+      <div className="relative aspect-square sm:aspect-4/3 w-full overflow-hidden bg-zinc-100">
+        <Image
           src={img}
           alt={name}
+          layout="fill"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
           loading="lazy"
         />

@@ -116,7 +116,7 @@ export default function AllItemsPage() {
         <button
           key={i}
           onClick={() => goTo(i)}
-          className={`h-9 min-w-[36px] rounded-full border px-3 text-sm font-medium ${
+          className={`h-9 min-w-9 rounded-full border px-3 text-sm font-medium ${
             active
               ? "border-amber-500 bg-amber-50 text-zinc-900"
               : "border-black/10 text-zinc-700 hover:bg-zinc-50"

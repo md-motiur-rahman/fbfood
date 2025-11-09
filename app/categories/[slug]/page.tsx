@@ -21,9 +21,9 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
         ) : (
           <>
             <figure className="overflow-hidden rounded-2xl ring-1 ring-black/5 bg-white shadow-sm">
-              <div className="relative aspect-[3/2] sm:aspect-[16/6]">
+              <div className="relative aspect-3/2 sm:aspect-16/6">
                 <Image src={category.picture} alt={category.name} fill priority sizes="100vw" className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
                 <figcaption className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
                   <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow">{category.name}</h1>
                   <p className="mt-2 text-xs sm:text-sm text-white/90 drop-shadow">{items.length} items • Pricing confirmed based on order quantity</p>
