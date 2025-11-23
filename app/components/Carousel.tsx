@@ -16,7 +16,7 @@ export default function Carousel({
   auto = true,
   interval = 5000,
   className = "",
-  buttonLabel = "Checkout",
+  buttonLabel = "Check out",
 }: {
   items: Slide[];
   auto?: boolean;
@@ -112,7 +112,7 @@ export default function Carousel({
                   href={s.href}
                   className="inline-flex h-12 md:h-14 items-center rounded-full bg-amber-500/95 backdrop-blur px-6 md:px-8 text-base md:text-lg font-semibold text-zinc-900 shadow-lg hover:bg-amber-400"
                 >
-                  {buttonLabel}
+                  {s.title ? `Check out ${s.title}` : buttonLabel}
                 </a>
                 {s.title ? <span className="sr-only">{s.title}</span> : null}
               </div>
@@ -124,14 +124,14 @@ export default function Carousel({
         <button
           aria-label="Previous slide"
           onClick={prev}
-          className="absolute left-3 bottom-5 sm:left-4 sm:top-1/2 sm:-translate-y-1/2 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
+          className="absolute bottom-4 right-16 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
         >
           <span className="-mt-0.5 text-xl sm:text-2xl">‹</span>
         </button>
         <button
           aria-label="Next slide"
           onClick={next}
-          className="absolute right-3 bottom-5 sm:right-4 sm:top-1/2 sm:-translate-y-1/2 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
+          className="absolute bottom-4 right-4 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
         >
           <span className="-mt-0.5 text-xl sm:text-2xl">›</span>
         </button>

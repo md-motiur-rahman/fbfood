@@ -1,14 +1,72 @@
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
+import mysql, { type PoolOptions, type RowDataPacket } from "mysql2/promise";
 
-const items = [
-  { id: 1, name: "Milk Choco Minis", img: "https://images.unsplash.com/photo-1548907040-4b7b09443896?q=80&w=800&auto=format&fit=crop", badge: "Best Seller" },
-  { id: 2, name: "Oatmeal Cookies", img: "https://images.unsplash.com/photo-1461009209120-103138d8b874?q=80&w=800&auto=format&fit=crop", badge: "Hot" },
-  { id: 3, name: "Caramel Bites", img: "https://images.unsplash.com/photo-1542528180-a1208c5169a0?q=80&w=800&auto=format&fit=crop" },
-  { id: 4, name: "Choco Chip Cookies", img: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=800&auto=format&fit=crop" },
-];
+export const runtime = "nodejs";
 
-export default function TopSellingPage() {
+function getConnectionConfig(): string | PoolOptions {
+  const rawUrl = process.env.DATABASE_URL?.trim();
+  const sslEnabled = String(process.env.DATABASE_SSL || "").toLowerCase() === "true" || String(process.env.DATABASE_SSL || "") === "1";
+  const rejectUnauth = !(String(process.env.DATABASE_SSL_REJECT_UNAUTHORIZED || "").toLowerCase() === "false" || String(process.env.DATABASE_SSL_REJECT_UNAUTHORIZED || "") === "0");
+
+  if (rawUrl) {
+    const cleaned = rawUrl.replace(/^\"|\"$/g, "").replace(/^'|'$/g, "");
+    try {
+      const u = new URL(cleaned);
+      const cfg: PoolOptions = {
+        host: u.hostname,
+        port: u.port ? Number(u.port) : 3306,
+        user: decodeURIComponent(u.username),
+        password: decodeURIComponent(u.password),
+        database: decodeURIComponent(u.pathname.replace(/^\//, "")),
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+      };
+      if (sslEnabled) {
+        cfg.ssl = { minVersion: "TLSv1.2", rejectUnauthorized: rejectUnauth } as unknown as PoolOptions["ssl"];
+      }
+      return cfg;
+    } catch {
+      return cleaned; // let driver parse raw URI
+    }
+  }
+  const host = process.env.DATABASE_HOST;
+  const user = process.env.DATABASE_USER;
+  const password = process.env.DATABASE_PASSWORD;
+  const database = process.env.DATABASE_NAME;
+  const port = Number(process.env.DATABASE_PORT || 3306);
+  if (!host || !user || !password || !database) {
+    throw new Error("Database environment variables are not fully configured");
+  }
+  const cfg: PoolOptions = {
+    host,
+    user,
+    password,
+    database,
+    port,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+  };
+  if (sslEnabled) {
+    cfg.ssl = { minVersion: "TLSv1.2", rejectUnauthorized: rejectUnauth } as unknown as PoolOptions["ssl"];
+  }
+  return cfg;
+}
+
+async function getTopSelling() {
+  const cfg = getConnectionConfig();
+  const pool = typeof cfg === "string" ? mysql.createPool(cfg) : mysql.createPool(cfg);
+  const [rows] = await pool.query<RowDataPacket[]>(
+    "SELECT productname, barcode, picture, status FROM products ORDER BY itemquery DESC, created_at DESC LIMIT 16"
+  );
+  await pool.end();
+  return rows as { productname: string; barcode: string; picture: string; status: "AVAILABLE" | "UNAVAILABLE" }[];
+}
+
+export default async function TopSellingPage() {
+  const items = await getTopSelling();
     return (
     <div className="min-h-screen bg-white text-zinc-900">
       <Navbar />
@@ -17,7 +75,14 @@ export default function TopSellingPage() {
         <p className="mt-2 text-sm text-zinc-600">Best performing products by demand.</p>
         <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {items.map((p) => (
-            <ProductCard key={p.id} id={p.id} name={p.name} img={p.img} badge={(p as any).badge} onDetailsHref="#" />
+            <ProductCard
+              key={p.barcode}
+              id={p.barcode}
+              name={p.productname}
+              img={p.picture}
+              available={p.status === "AVAILABLE"}
+              onDetailsHref={`/items/${p.barcode}`}
+            />
           ))}
         </div>
       </main>

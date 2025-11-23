@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ClientProviders from "./components/ClientProviders";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,6 +14,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
+
 export const metadata: Metadata = {
   title: "FBFOOD | Wholesale Chocolates, Biscuits & Snacks",
   description: "FBFOOD is a wholesale supplier of chocolates, biscuits, snacks and beverages. Bulk pricing, fast shipping and dedicated B2B support.",
@@ -19,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "FBFOOD | Wholesale Chocolates, Biscuits & Snacks",
     description: "Wholesale supplier for chocolates, biscuits, snacks and beverages. Bulk pricing and fast delivery.",
-    url: "https://fbfood.example",
+    url: "https://fbfood.co.uk",
     siteName: "FBFOOD",
     type: "website",
   },
@@ -40,8 +44,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-        <footer className="border-t border-amber-200 bg-amber-50 text-zinc-800">
+    
+        <div suppressHydrationWarning>
+          
+          <ClientProviders>{children}</ClientProviders>
+        </div>
+        <footer className="border-t border-amber-300 bg-amber-100 text-zinc-800">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 grid gap-8 md:grid-cols-3">
             <div>
               <div className="flex items-center gap-2">
@@ -68,13 +76,30 @@ export default function RootLayout({
               </ul>
             </div>
           </div>
-          <div className="border-t border-amber-200">
+          <div className="border-t border-amber-300">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 text-xs text-zinc-700 flex items-center justify-between">
               <span>© {new Date().getFullYear()} FBFOOD. All rights reserved.</span>
               <span>Wholesale • B2B • Foodservice</span>
             </div>
           </div>
         </footer>
+        <Script
+    id="tawk-embed"
+    strategy="afterInteractive"
+    dangerouslySetInnerHTML={{
+      __html: `
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+          var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+          s1.async=true;
+          s1.src='https://embed.tawk.to/69221b9f88c368196603e977/1jamjnqee';
+          s1.charset='UTF-8';
+          s1.setAttribute('crossorigin','*');
+          s0.parentNode.insertBefore(s1,s0);
+        })();
+      `,
+    }}
+  />
       </body>
     </html>
   );
