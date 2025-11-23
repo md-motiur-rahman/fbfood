@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^1.2.0",
     "bcrypt": "^6.0.0",
     "mysql2": "^3.15.3",
     "next": "16.0.1",
