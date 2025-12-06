@@ -171,6 +171,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ bar
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
                   className="object-contain bg-zinc-50"
+                  unoptimized={product.picture.startsWith("http")}
                 />
                 {promoBadge ? (
                   <div className="absolute left-3 top-3 inline-flex items-center rounded-full bg-amber-500 px-3 py-1 text-[11px] font-semibold text-zinc-900 shadow">

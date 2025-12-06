@@ -475,6 +475,7 @@ export default function AdminProductsPage() {
                           width={40}
                           height={40}
                           className="h-10 w-10 object-cover rounded"
+                          unoptimized={p.picture.startsWith("http")}
                         />
                       ) : (
                         <span className="text-zinc-500">—</span>

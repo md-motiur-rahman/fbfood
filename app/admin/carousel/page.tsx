@@ -205,7 +205,7 @@ export default function AdminCarouselPage() {
                 items.map((s) => (
                   <tr key={s.id} className="border-t border-amber-100 hover:bg-amber-50/50">
                     <td className="px-3 py-2 font-mono text-xs">{s.sort_order}</td>
-                    <td className="px-3 py-2">{s.img ? <Image src={s.img} alt={s.title || "slide"} width={64} height={40} className="h-10 w-16 object-cover rounded" /> : <span className="text-zinc-500">—</span>}</td>
+                    <td className="px-3 py-2">{s.img ? <Image src={s.img} alt={s.title || "slide"} width={64} height={40} className="h-10 w-16 object-cover rounded" unoptimized={s.img.startsWith("http")} /> : <span className="text-zinc-500">—</span>}</td>
                     <td className="px-3 py-2">{s.title || <span className="text-zinc-500">—</span>}</td>
                     <td className="px-3 py-2 font-mono text-xs truncate max-w-[200px]">{s.href}</td>
                     <td className="px-3 py-2">

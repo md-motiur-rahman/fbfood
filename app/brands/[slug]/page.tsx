@@ -150,6 +150,7 @@ export default async function BrandDetailPage({
               priority
               sizes="100vw"
               className="object-cover"
+              unoptimized={brand.picture.startsWith("http")}
             />
             <div className="absolute inset-0 pointer-events-none bg-linear-to-t from-black/50 via-black/10 to-transparent" />
             <figcaption className="absolute inset-0 flex flex-col items-center justify-center text-center ">

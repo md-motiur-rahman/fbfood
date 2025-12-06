@@ -94,7 +94,7 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
           <>
             <figure className="overflow-hidden rounded-2xl ring-1 ring-black/5 bg-white shadow-sm">
               <div className="relative aspect-3/2 sm:aspect-16/6">
-                <Image src={category.picture} alt={category.name} fill priority sizes="100vw" className="object-cover" />
+                <Image src={category.picture} alt={category.name} fill priority sizes="100vw" className="object-cover" unoptimized={category.picture.startsWith("http")} />
                 <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
                 <figcaption className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
                   <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow">{category.name}</h1>

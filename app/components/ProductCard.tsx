@@ -32,9 +32,11 @@ export default function ProductCard({
         <Image
           src={img}
           alt={name}
-          layout="fill"
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
           loading="lazy"
+          unoptimized={img.startsWith("http")}
         />
         {badge ? (
           <div className="absolute left-2 top-2 inline-flex items-center rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-semibold text-zinc-900 shadow">

@@ -245,21 +245,118 @@ async function storeImage(picture: string): Promise<{ publicPath: string; key: s
       const baseDir = path.join(process.cwd(), "public", "uploads", "products");
       await fs.mkdir(baseDir, { recursive: true });
       const direct = resolveDirectUrl(picture);
-      const res = await fetch(direct, { cache: "no-store", headers: { "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36" } });
-      if (!res.ok) return null;
-      const contentType = res.headers.get("content-type") || "";
-      const arrayBuffer = await res.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      let ext = path.extname(new URL(direct).pathname);
-      if (!ext) {
-        const mimeExt = extFromMime(contentType.split(";")[0]);
-        ext = mimeExt || ".bin";
+      
+      // Retry logic with multiple attempts and different headers
+      const maxRetries = 3;
+      let lastError: Error | null = null;
+      
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+          
+          const headers: Record<string, string> = {
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+            "accept-language": "en-US,en;q=0.9",
+            "cache-control": "no-cache",
+            "pragma": "no-cache",
+          };
+          
+          // Add referer for some servers that check it
+          try {
+            const urlObj = new URL(direct);
+            headers["referer"] = urlObj.origin + "/";
+          } catch {}
+          
+          const res = await fetch(direct, { 
+            cache: "no-store", 
+            headers,
+            signal: controller.signal,
+            // @ts-ignore - Next.js specific option
+            next: { revalidate: 0 }
+          });
+          
+          clearTimeout(timeoutId);
+          
+          if (!res.ok) {
+            lastError = new Error(`HTTP ${res.status}: ${res.statusText}`);
+            // Don't retry on 4xx errors (except 429)
+            if (res.status >= 400 && res.status < 500 && res.status !== 429) {
+              break;
+            }
+            continue;
+          }
+          
+          const contentType = res.headers.get("content-type") || "";
+          
+          // Check if response is actually an image
+          if (contentType && !contentType.startsWith("image/") && !contentType.includes("octet-stream")) {
+            lastError = new Error(`Invalid content-type: ${contentType}`);
+            break;
+          }
+          
+          const arrayBuffer = await res.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
+          
+          // Validate minimum size (at least 100 bytes for a valid image)
+          if (buffer.length < 100) {
+            lastError = new Error(`Image too small: ${buffer.length} bytes`);
+            continue;
+          }
+          
+          // Detect extension from URL path first
+          let ext = "";
+          try {
+            const urlPath = new URL(direct).pathname;
+            const urlExt = path.extname(urlPath).toLowerCase();
+            if ([".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".avif"].includes(urlExt)) {
+              ext = urlExt;
+            }
+          } catch {}
+          
+          // Fallback to content-type
+          if (!ext) {
+            const mimeExt = extFromMime(contentType.split(";")[0].trim());
+            ext = mimeExt || "";
+          }
+          
+          // Fallback to magic bytes detection
+          if (!ext || ext === ".bin") {
+            const detected = detectMimeFromBuffer(buffer);
+            if (detected.ext !== ".bin") {
+              ext = detected.ext;
+            }
+          }
+          
+          // Final fallback
+          if (!ext) ext = ".jpg";
+          
+          const name = crypto.randomBytes(8).toString("hex") + "_" + Date.now() + ext.toLowerCase();
+          const absPath = path.join(baseDir, name);
+          await fs.writeFile(absPath, buffer);
+          const publicPath = "/uploads/products/" + name;
+          return { publicPath, key: publicPath };
+          
+        } catch (err: any) {
+          lastError = err;
+          if (err.name === "AbortError") {
+            lastError = new Error("Request timeout");
+          }
+          // Wait before retry (exponential backoff)
+          if (attempt < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+          }
+        }
       }
-      const name = crypto.randomBytes(8).toString("hex") + "_" + Date.now() + ext.toLowerCase();
-      const absPath = path.join(baseDir, name);
-      await fs.writeFile(absPath, buffer);
-      const publicPath = "/uploads/products/" + name;
-      return { publicPath, key: publicPath };
+      
+      // All retries failed - try to use the URL directly as fallback
+      // This allows the image to be served from the original source
+      console.error(`Failed to download image after ${maxRetries} attempts: ${picture}`, lastError?.message);
+      
+      // Return the original URL as the picture path (external image)
+      // This way the product can still be created with the external image URL
+      return { publicPath: picture, key: picture };
     }
 
     // Absolute public path: copy into uploads for consistency if exists; else reuse path

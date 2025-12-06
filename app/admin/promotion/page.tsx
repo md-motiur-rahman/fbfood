@@ -159,7 +159,7 @@ export default function AdminPromotionPage() {
                   <tr key={p.id} className="border-t border-amber-100 hover:bg-amber-50/50">
                     <td className="px-3 py-2"><input type="checkbox" checked={selected.has(p.id)} onChange={() => toggleOne(p.id)} aria-label={`Select ${p.productname}`}/></td>
                     <td className="px-3 py-2 font-medium">{p.productname}</td>
-                    <td className="px-3 py-2">{p.picture ? <Image src={p.picture} alt={p.productname} width={36} height={36} className="h-9 w-9 object-cover rounded" /> : <span className="text-zinc-500">—</span>}</td>
+                    <td className="px-3 py-2">{p.picture ? <Image src={p.picture} alt={p.productname} width={36} height={36} className="h-9 w-9 object-cover rounded" unoptimized={p.picture.startsWith("http")} /> : <span className="text-zinc-500">—</span>}</td>
                     <td className="px-3 py-2">{p.category}</td>
                     <td className="px-3 py-2">{p.brand || <span className="text-zinc-500">—</span>}</td>
                     <td className="px-3 py-2 font-mono text-xs">{p.barcode}</td>
