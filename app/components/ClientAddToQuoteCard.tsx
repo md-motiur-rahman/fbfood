@@ -9,11 +9,12 @@ export type ClientAddToQuoteCardProps = Omit<
   "onAdd" | "onWish"
 > & {
   productname?: string; // optional alias for name when convenient
+  darkTheme?: boolean;
 };
 
 export default function ClientAddToQuoteCard(props: ClientAddToQuoteCardProps) {
   const { addItem } = useQuote();
-  const { id, name, productname, img, available, badge, onDetailsHref } = props;
+  const { id, name, productname, img, available, badge, onDetailsHref, darkTheme } = props;
   const finalName = productname || name;
 
   function handleAdd() {
@@ -31,6 +32,7 @@ export default function ClientAddToQuoteCard(props: ClientAddToQuoteCardProps) {
       available={available}
       onAdd={handleAdd}
       onDetailsHref={onDetailsHref}
+      darkTheme={darkTheme}
     />
   );
 }

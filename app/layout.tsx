@@ -5,6 +5,7 @@ import Link from "next/link";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ClientProviders from "./components/ClientProviders";
+import TawkChat from "./components/TawkChat";
 import Script from "next/script";
 
 const geistSans = Geist({
@@ -43,7 +44,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "FBFOOD | Wholesale Chocolates, Biscuits & Snacks",
     description:
-      "Bulk pricing, fast delivery and dedicated support for businesses.",
+    "Bulk pricing, fast delivery and dedicated support for businesses.",
+  },
+  icons: {
+    icon: "/logo.png",
   },
 };
 
@@ -169,23 +173,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        <Script
-          id="tawk-embed"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-          var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-          s1.async=true;
-          s1.src='https://embed.tawk.to/69221b9f88c368196603e977/1jamjnqee';
-          s1.charset='UTF-8';
-          s1.setAttribute('crossorigin','*');
-          s0.parentNode.insertBefore(s1,s0);
-        })();
-      `,
-          }}
-        />
+        <TawkChat />
         <SpeedInsights />
       </body>
     </html>
