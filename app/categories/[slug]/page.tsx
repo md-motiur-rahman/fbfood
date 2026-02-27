@@ -82,13 +82,13 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
   const { category, products } = await getCategoryAndProducts(slug);
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
+    <div className="min-h-screen bg-white text-slate-900">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         {!category ? (
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Category Not Found</h1>
-            <p className="mt-2 text-sm text-zinc-600">We couldn\'t find this category. Go back to <a className="text-amber-700 hover:underline" href="/categories">Categories</a>.</p>
+            <p className="mt-2 text-sm text-slate-600">We couldn\'t find this category. Go back to <a className="text-sky-700 hover:underline" href="/categories">Categories</a>.</p>
           </div>
         ) : (
           <>
@@ -103,14 +103,14 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
               </div>
             </figure>
             <div className="mt-3 flex items-center gap-2">
-              <Link href="/categories" className="inline-flex h-9 items-center rounded-full border border-black/10 px-4 text-sm font-medium hover:bg-zinc-50">Back to Categories</Link>
-              <Link href="/contact" className="inline-flex h-9 items-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400">Get a Quote</Link>
+              <Link href="/categories" className="inline-flex h-9 items-center rounded-full border border-black/10 px-4 text-sm font-medium hover:bg-slate-50">Back to Categories</Link>
+              <Link href="/contact" className="inline-flex h-9 items-center rounded-full bg-sky-500 px-4 text-sm font-semibold text-slate-900 shadow hover:bg-sky-400">Get a Quote</Link>
             </div>
 
             <section className="mt-6">
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
                 {products.length === 0 ? (
-                  <div className="col-span-full text-sm text-zinc-600">No products available in this category yet.</div>
+                  <div className="col-span-full text-sm text-slate-600">No products available in this category yet.</div>
                 ) : (
                   products.map((p, idx) => (
                     <ClientAddToQuoteCard

@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useQuote } from "./quote/QuoteContext";
 
 export default function Navbar() {
@@ -109,140 +110,180 @@ export default function Navbar() {
   const { totalCount } = useQuote();
 
   return (
-    <header className={`sticky top-0 z-50 ${scrolled || open ? "shadow-sm" : ""}`}>
-      <div className={`${isHome ? 'border-b-0' : 'border-b border-amber-300'} bg-amber-100/90 backdrop-blur transition-colors`}>
-        <div className="mx-auto w-full px-4 sm:px-6 h-14 flex items-center justify-between gap-2 md:gap-4">
+    <header className={`sticky top-0 z-50 ${scrolled || open ? "shadow-lg bg-sky-50/95 backdrop-blur-xl border-b border-sky-100" : "bg-sky-50 border-b border-sky-100"} transition-all duration-300`}>
+      <div className="container-custom h-20 flex items-center justify-between gap-4">
           {/* Brand */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <span className="inline-grid h-8 w-8 place-items-center rounded bg-amber-500 text-zinc-900 font-bold shadow-sm">FB</span>
-            <span className="text-base sm:text-lg font-semibold tracking-tight">FBFOOD</span>
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0 transition-transform hover:scale-105 duration-300">
+            <Image
+              src="/logo.png"
+              alt="FB Food"
+              width={200}
+              height={65}
+              className="h-16 w-auto object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop nav (shown only on large screens) */}
-          <nav className="hidden lg:flex items-center whitespace-nowrap flex-1 min-w-0">
-            <div className="flex items-center gap-1 overflow-visible flex-wrap md:flex-nowrap">
-              <Link
+          <nav className="hidden lg:flex items-center gap-4 flex-1 min-w-0 justify-center px-4">
+             <Link
                 href="/"
-                className={`inline-flex items-center whitespace-nowrap shrink-0 px-3 py-2 text-[15px] font-medium border-b-2 ${
-                  isActive('/') ? "text-zinc-900 border-amber-500" : "text-zinc-700 border-transparent hover:text-amber-700 hover:border-amber-500"
+                className={`px-5 py-2.5 text-sm font-semibold rounded-full transition-all duration-200 ${
+                  isActive('/') ? "text-sky-700 bg-white shadow-sm shadow-sky-100 ring-1 ring-sky-100" : "text-slate-600 hover:text-sky-700 hover:bg-white/50"
                 }`}
                 aria-current={isActive('/') ? "page" : undefined}
               >
                 Home
               </Link>
               <div
-                className="relative inline-flex shrink-0"
+                className="relative group"
                 ref={productsRef}
                 onMouseEnter={openProducts}
                 onMouseLeave={scheduleCloseProducts}
               >
                 <Link
                   href="/items"
-                  className={`inline-flex items-center whitespace-nowrap shrink-0 px-3 py-2 text-[15px] font-medium border-b-2 ${
-                    productsActive ? "text-zinc-900 border-amber-500" : "text-zinc-700 border-transparent hover:text-amber-700 hover:border-amber-500"
+                  className={`flex items-center gap-1 px-5 py-2.5 text-sm font-semibold rounded-full transition-all duration-200 ${
+                    productsActive ? "text-sky-700 bg-white shadow-sm shadow-sky-100 ring-1 ring-sky-100" : "text-slate-600 hover:text-sky-700 hover:bg-white/50"
                   }`}
                 >
-                  Products ▾
+                  Products <span className="text-xs transition-transform duration-200 group-hover:rotate-180 opacity-60">▼</span>
                 </Link>
                 <div
-                  className={`absolute left-0 top-full mt-1 w-72 max-h-[70vh] overflow-y-auto rounded-md border border-amber-200 bg-white shadow-lg z-50 ${productsOpen ? "block" : "hidden"}`}
+                  className={`absolute left-1/2 -translate-x-1/2 top-full mt-3 w-64 rounded-2xl border border-slate-100 bg-white shadow-2xl shadow-slate-200/50 p-2 transition-all duration-200 origin-top ${productsOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}
                   role="menu"
                   onMouseEnter={openProducts}
                   onMouseLeave={scheduleCloseProducts}
                 >
-                  <Link href="/items" className="block px-4 py-2.5 text-sm text-zinc-800 hover:bg-amber-50" role="menuitem">All Products</Link>
-                  <Link href="/categories" className="block px-4 py-2.5 text-sm text-zinc-800 hover:bg-amber-50" role="menuitem">Categories</Link>
-                  <Link href="/brands" className="block px-4 py-2.5 text-sm text-zinc-800 hover:bg-amber-50" role="menuitem">Brands</Link>
-                  <Link href="/whats-new" className="block px-4 py-2.5 text-sm text-zinc-800 hover:bg-amber-50" role="menuitem">What&apos;s New</Link>
-                  <Link href="/top-selling" className="block px-4 py-2.5 text-sm text-zinc-800 hover:bg-amber-50" role="menuitem">Top Selling</Link>
+                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-t border-l border-slate-100 rotate-45"></div>
+                  <div className="relative bg-white rounded-xl overflow-hidden">
+                    <Link href="/items" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-700 transition-colors group/item">
+                       <span className="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center group-hover/item:bg-sky-500 group-hover/item:text-white transition-colors">📦</span>
+                       All Products
+                    </Link>
+                    <Link href="/categories" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-700 transition-colors group/item">
+                       <span className="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center group-hover/item:bg-sky-500 group-hover/item:text-white transition-colors">📂</span>
+                       Categories
+                    </Link>
+                    <Link href="/brands" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-700 transition-colors group/item">
+                       <span className="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center group-hover/item:bg-sky-500 group-hover/item:text-white transition-colors">🏷️</span>
+                       Brands
+                    </Link>
+                    <Link href="/whats-new" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-700 transition-colors group/item">
+                       <span className="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center group-hover/item:bg-sky-500 group-hover/item:text-white transition-colors">✨</span>
+                       What&apos;s New
+                    </Link>
+                    <Link href="/top-selling" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-700 transition-colors group/item">
+                       <span className="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center group-hover/item:bg-sky-500 group-hover/item:text-white transition-colors">🔥</span>
+                       Top Selling
+                    </Link>
+                  </div>
                 </div>
               </div>
-              {/* Promotion dropdown inside main order */}
+              
               <div
-                className="relative inline-flex shrink-0 ml-1"
+                className="relative group ml-2"
                 ref={promoRef}
                 onMouseEnter={openPromo}
                 onMouseLeave={scheduleClosePromo}
               >
                 <Link
                   href="#"
-                  className={`inline-flex items-center whitespace-nowrap shrink-0 px-3 py-2 text-[15px] font-medium border-b-2 ${
-                    activePromo ? "text-zinc-900 border-amber-500" : "text-zinc-700 border-transparent hover:text-amber-700 hover:border-amber-500"
+                  className={`flex items-center gap-1 px-5 py-2.5 text-sm font-semibold rounded-full transition-all duration-200 ${
+                    activePromo ? "text-sky-700 bg-white shadow-sm shadow-sky-100 ring-1 ring-sky-100" : "text-slate-600 hover:text-sky-700 hover:bg-white/50"
                   }`}
                 >
-                  Promotions ▾
+                  Promotions <span className="text-xs transition-transform duration-200 group-hover:rotate-180 opacity-60">▼</span>
                 </Link>
                 <div
-                  className={`absolute right-0 top-full mt-1 w-72 max-h-[70vh] overflow-y-auto rounded-md border border-amber-200 bg-white shadow-lg z-50 ${promoOpen ? "block" : "hidden"}`}
+                  className={`absolute left-1/2 -translate-x-1/2 top-full mt-3 w-64 rounded-2xl border border-sky-100 bg-white shadow-2xl shadow-sky-200/20 p-2 transition-all duration-200 origin-top ${promoOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}
                   role="menu"
                   onMouseEnter={openPromo}
                   onMouseLeave={scheduleClosePromo}
                 >
-                  <Link href="/promotion/monthly" className="block px-4 py-2.5 text-sm text-zinc-800 hover:bg-amber-50" role="menuitem">Monthly Promotion</Link>
-                  <Link href="/promotion/seasonal" className="block px-4 py-2.5 text-sm text-zinc-800 hover:bg-amber-50" role="menuitem">Seasonal Promotion</Link>
+                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-t border-l border-slate-100 rotate-45"></div>
+                  <div className="relative bg-white rounded-xl overflow-hidden">
+                    <Link href="/promotion/monthly" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-700 transition-colors group/item">
+                       <span className="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center group-hover/item:bg-sky-500 group-hover/item:text-white transition-colors">📅</span>
+                       Monthly Promotion
+                    </Link>
+                    <Link href="/promotion/seasonal" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-700 transition-colors group/item">
+                       <span className="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center group-hover/item:bg-sky-500 group-hover/item:text-white transition-colors">🍂</span>
+                       Seasonal Promotion
+                    </Link>
+                  </div>
                 </div>
               </div>
-              {/* Contact and FAQs */}
+
               <a
                 href="/contact"
-                className={`inline-flex items-center whitespace-nowrap shrink-0 px-3 py-2 text-[15px] font-medium border-b-2 ${
-                  isActive('/contact') ? "text-zinc-900 border-amber-500" : "text-zinc-700 border-transparent hover:text-amber-700 hover:border-amber-500"
+                className={`px-5 py-2.5 text-sm font-semibold rounded-full transition-all duration-200 ${
+                  isActive('/contact') ? "text-sky-700 bg-white shadow-sm shadow-sky-100 ring-1 ring-sky-100" : "text-slate-600 hover:text-sky-700 hover:bg-white/50"
                 }`}
                 aria-current={isActive('/contact') ? "page" : undefined}
               >
                 Contact
               </a>
-              <a
-                href="/faqs"
-                className={`inline-flex items-center whitespace-nowrap shrink-0 px-3 py-2 text-[15px] font-medium border-b-2 ${
-                  isActive('/faqs') ? "text-zinc-900 border-amber-500" : "text-zinc-700 border-transparent hover:text-amber-700 hover:border-amber-500"
-                }`}
-                aria-current={isActive('/faqs') ? "page" : undefined}
-              >
-                FAQ&apos;s
-              </a>
-            </div>
           </nav>
 
           {/* Desktop search (shown only on large screens) */}
-          <form action="/items" method="get" className="hidden lg:flex items-center gap-2 mx-2 md:mx-3 w-[260px] md:w-[420px] lg:w-[520px] flex-none">
+          <form action="/items" method="get" className="hidden xl:flex items-center w-[280px] relative group">
             <label htmlFor="nav-search" className="sr-only">Search</label>
-            <div className="flex w-full items-center gap-2 rounded-full bg-white ring-1 ring-black/10 px-4 py-2">
-              <span aria-hidden className="text-amber-700">🔎</span>
+            <div className="flex w-full items-center gap-2 rounded-full bg-white border border-sky-100 px-4 py-2.5 transition-all duration-300 focus-within:ring-2 focus-within:ring-sky-200 focus-within:border-sky-300 focus-within:bg-white focus-within:shadow-md hover:border-sky-200 hover:shadow-sm">
+              <span aria-hidden className="text-sky-300 group-focus-within:text-sky-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                  <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clipRule="evenodd" />
+                </svg>
+              </span>
               <input
                 id="nav-search"
                 name="q"
                 type="search"
-                placeholder="Search products, categories, brands, barcodes..."
-                className="w-full bg-transparent outline-none text-base placeholder:text-zinc-500"
+                placeholder="Search products..."
+                className="w-full bg-transparent outline-none text-sm text-slate-700 placeholder:text-slate-400"
               />
             </div>
           </form>
 
           {/* Right actions (shown only on large screens) */}
-          <div className="hidden lg:flex items-center gap-2 lg:gap-3 shrink-0 whitespace-nowrap">
-            <Link href="/quote" className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-white px-3 py-1.5 text-sm font-medium text-zinc-800 hover:bg-amber-50">
-              <span aria-hidden>🧾</span>
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
+            <Link href="/quote" className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:border-sky-200 hover:text-sky-700 hover:bg-sky-50 hover:shadow-md transition-all duration-200 group active:scale-95">
+              <span className="group-hover:scale-110 transition-transform duration-200 text-lg">🧾</span>
               <span>Quote</span>
-              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-xs font-bold text-zinc-900">{totalCount}</span>
+              {totalCount > 0 && (
+                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-sky-500 px-1.5 text-xs font-bold text-white shadow-sm shadow-sky-200 animate-pulse">{totalCount}</span>
+              )}
             </Link>
+            
+            <div className="h-8 w-px bg-slate-200 mx-1"></div>
+            
             {auth?.authenticated ? (
               <div className="relative" ref={userMenuRef}>
                 <button
                   aria-haspopup="menu"
                   aria-expanded={userMenuOpen}
                   onClick={() => setUserMenuOpen((o) => !o)}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-amber-300 bg-white text-zinc-800"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 hover:border-sky-300 hover:text-sky-600 hover:shadow-md transition-all duration-200 focus:ring-4 focus:ring-sky-50 focus:outline-none active:scale-95"
                 >
-                  <span className="text-sm font-semibold">
+                  <span className="text-sm font-bold">
                     {computeInitials({ firstName: auth?.firstName ?? null, lastName: auth?.lastName ?? null })}
                   </span>
                 </button>
                 <div
-                  className={`absolute right-0 mt-2 w-44 rounded-md border border-amber-200 bg-white shadow ${userMenuOpen ? "block" : "hidden"}`}
+                  className={`absolute right-0 mt-3 w-64 rounded-2xl border border-slate-100 bg-white shadow-2xl ring-1 ring-black/5 p-2 transition-all duration-200 origin-top-right ${userMenuOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}
                 >
-                  <a href="/admin" className="block px-3 py-2 text-sm text-zinc-800 hover:bg-amber-50">Dashboard</a>
-                  <a href="/profile" className="block px-3 py-2 text-sm text-zinc-800 hover:bg-amber-50">Profile</a>
+                  <div className="px-4 py-3 mb-2 border-b border-slate-50 bg-slate-50/50 rounded-xl">
+                    <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Signed in as</p>
+                    <p className="text-sm font-bold text-slate-900 truncate">{auth.email}</p>
+                  </div>
+                  <a href="/admin" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-700 rounded-xl hover:bg-sky-50 hover:text-sky-700 transition-colors group">
+                    <span className="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-colors">📊</span>
+                    Dashboard
+                  </a>
+                  <a href="/profile" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-700 rounded-xl hover:bg-sky-50 hover:text-sky-700 transition-colors group">
+                    <span className="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-colors">👤</span>
+                    Profile
+                  </a>
                   <button
                     onClick={async () => {
                       try {
@@ -250,21 +291,22 @@ export default function Navbar() {
                         window.location.assign("/");
                       } catch {}
                     }}
-                    className="block w-full text-left px-3 py-2 text-sm text-zinc-800 hover:bg-amber-50"
+                    className="flex items-center gap-3 w-full text-left px-3 py-2.5 text-sm font-medium text-red-600 rounded-xl hover:bg-red-50 transition-colors mt-1 group"
                   >
-                    Logout
+                    <span className="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors">🚪</span>
+                    Sign out
                   </button>
                 </div>
               </div>
             ) : (
-              <>
-                <a href="/auth/login" className="inline-flex h-9 items-center rounded-full border border-amber-200 px-4 text-sm font-medium hover:bg-amber-50">
-                  Login
+              <div className="flex items-center gap-2">
+                <a href="/auth/login" className="inline-flex h-10 items-center justify-center rounded-full px-6 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
+                  Log in
                 </a>
-                <a href="/auth/signup" className="inline-flex h-9 items-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400">
+                <a href="/auth/signup" className="inline-flex h-10 items-center justify-center rounded-full bg-sky-500 px-6 text-sm font-bold text-white shadow-lg shadow-sky-200 hover:bg-sky-600 hover:shadow-xl hover:shadow-sky-300 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
                   Sign up
                 </a>
-              </>
+              </div>
             )}
           </div>
 
@@ -273,191 +315,225 @@ export default function Navbar() {
             aria-label="Toggle menu"
             aria-expanded={open}
             onClick={() => setOpen((o) => !o)}
-            className="lg:hidden grid h-10 w-10 place-items-center rounded border border-black/10 text-zinc-900"
+            className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 hover:shadow-sm transition-all active:scale-95"
           >
-            {open ? "✕" : "☰"}
+            {open ? (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            )}
           </button>
-        </div>
       </div>
 
       {/* Mobile overlay */}
       {open && (
-        <div className="fixed inset-0 z-40 bg-black/40" onClick={() => setOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm transition-opacity" onClick={() => setOpen(false)} />
       )}
 
       {/* Mobile/medium dropdown */}
       <div
-        className={`lg:hidden absolute left-0 right-0 z-50 origin-top border-b border-amber-200 bg-amber-50/95 transition-all ${
-          open ? "opacity-100 translate-y-0" : "pointer-events-none -translate-y-2 opacity-0"
+        className={`lg:hidden fixed inset-0 z-50 bg-white transition-transform duration-300 ease-in-out ${
+          open ? "translate-x-0" : "translate-x-full"
         }`}
+        style={{ height: '100dvh' }}
       >
-        <nav className="mx-auto w-full px-4 sm:px-6 py-2 grid">
-          <Link
-            href="/"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/') ? "page" : undefined}
-          >
-            Home
-          </Link>
-          <div className="mt-2 mb-1 px-2 text-xs font-semibold uppercase text-zinc-600">Products</div>
-          <Link
-            href="/items"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/items') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/items') ? "page" : undefined}
-          >
-            All Products
-          </Link>
-          <Link
-            href="/categories"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/categories') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/categories') ? "page" : undefined}
-          >
-            Categories
-          </Link>
-          <Link
-            href="/brands"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/brands') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/brands') ? "page" : undefined}
-          >
-            Brands
-          </Link>
-          <a
-            href="/whats-new"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/whats-new') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/whats-new') ? "page" : undefined}
-          >
-            What&apos;s New
-          </a>
-          <a
-            href="/top-selling"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/top-selling') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/top-selling') ? "page" : undefined}
-          >
-            Top Selling
-          </a>
-          <a
-            href="/promotion/monthly"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/promotion/monthly') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/promotion/monthly') ? "page" : undefined}
-          >
-            Monthly Promotion
-          </a>
-          <a
-            href="/promotion/seasonal"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/promotion/seasonal') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/promotion/seasonal') ? "page" : undefined}
-          >
-            Seasonal Promotion
-          </a>
-          <a
-            href="/contact"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/contact') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/contact') ? "page" : undefined}
-          >
-            Contact
-          </a>
-          <a
-            href="/faqs"
-            onClick={() => setOpen(false)}
-            className={`py-3 px-2 text-sm font-medium rounded ${
-              isActive('/faqs') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-            }`}
-            aria-current={isActive('/faqs') ? "page" : undefined}
-          >
-            FAQ&apos;s
-          </a>
-          {auth?.authenticated && auth.role === 'ADMIN' && (
-            <a
-              href="/admin"
-              onClick={() => setOpen(false)}
-              className={`py-3 px-2 text-sm font-medium rounded ${
-                isActive('/admin') ? "bg-amber-100 text-zinc-900" : "text-zinc-800 hover:bg-amber-50"
-              }`}
-              aria-current={isActive('/admin') ? "page" : undefined}
-            >
-              Dashboard
-            </a>
-          )}
-          <div className="py-2 grid gap-2">
-            {auth?.authenticated ? (
-              <>
-                <a href="/admin" onClick={() => setOpen(false)} className="inline-flex h-10 items-center justify-center rounded-full border border-amber-200 px-4 text-sm font-medium hover:bg-amber-50">
-                  Dashboard
-                </a>
-                <a href="/profile" onClick={() => setOpen(false)} className="inline-flex h-10 items-center justify-center rounded-full border border-amber-200 px-4 text-sm font-medium hover:bg-amber-50">
-                  Profile
-                </a>
-                <button
-                  onClick={async () => {
-                    try {
-                      await fetch("/api/auth/logout", { method: "POST" });
-                      setOpen(false);
-                      window.location.assign("/");
-                    } catch {}
-                  }}
-                  className="inline-flex h-10 items-center justify-center rounded-full border border-amber-200 px-4 text-sm font-medium hover:bg-amber-50"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <div className="flex items-center gap-2">
-                <a href="/auth/login" onClick={() => setOpen(false)} className="inline-flex h-10 flex-1 items-center justify-center rounded-full border border-amber-200 px-4 text-sm font-medium hover:bg-amber-50">
-                  Login
-                </a>
-                <a href="/auth/signup" onClick={() => setOpen(false)} className="inline-flex h-10 flex-1 items-center justify-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400">
-                  Sign up
-                </a>
-              </div>
-            )}
-          </div>
-        </nav>
-      </div>
+        <div className="h-full flex flex-col overflow-y-auto">
+           {/* Mobile Header with Close Button */}
+           <div className="flex items-center justify-between p-4 border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur-md z-10">
+              <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2">
+                <Image
+                  src="/logo.png"
+                  alt="FB Food"
+                  width={150}
+                  height={50}
+                  className="h-12 w-auto object-contain"
+                />
+              </Link>
+              <button
+                onClick={() => setOpen(false)}
+                className="p-2 rounded-full hover:bg-slate-100 transition-colors"
+                aria-label="Close menu"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-slate-500">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+           </div>
 
-      {/* Mobile/medium search bar */}
-      <div className="lg:hidden border-b border-amber-200 bg-amber-50/90">
-        <div className="mx-auto w-full px-4 sm:px-6 py-2">
-          <form action="/items" method="get" className="flex items-center gap-2">
-            <label htmlFor="nav-search-mobile" className="sr-only">Search</label>
-            <div className="flex w-full items-center gap-2 rounded-full bg-white ring-1 ring-black/10 px-4 py-3">
-              <span aria-hidden className="text-amber-700">🔎</span>
-              <input
-                id="nav-search-mobile"
-                name="q"
-                type="search"
-                placeholder="Search products, categories, brands..."
-                className="w-full bg-transparent outline-none text-base placeholder:text-zinc-500"
-              />
-            </div>
-            <button type="submit" className="sr-only">Search</button>
-          </form>
+           <div className="container-custom py-6 space-y-6 pb-20">
+             {/* Search */}
+             <form action="/items" method="get" className="relative">
+               <div className="relative">
+                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                     <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clipRule="evenodd" />
+                   </svg>
+                 </span>
+                 <input
+                   name="q"
+                   type="search"
+                   placeholder="Search products..."
+                   className="w-full bg-slate-50 rounded-2xl border border-slate-200 py-4 pl-12 pr-4 text-base outline-none focus:border-sky-300 focus:ring-4 focus:ring-sky-100 transition-all shadow-inner"
+                 />
+               </div>
+             </form>
+   
+             {/* Main Navigation */}
+             <div className="grid gap-2">
+                <Link
+                  href="/"
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-3 p-4 rounded-2xl transition-all ${
+                    isActive('/') ? "bg-sky-50 text-sky-700 border border-sky-100 shadow-sm" : "bg-white border border-slate-100 text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  <span className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${isActive('/') ? "bg-sky-200 text-sky-800" : "bg-slate-100 text-slate-500"}`}>🏠</span>
+                  <span className="font-semibold text-lg">Home</span>
+                </Link>
+                
+                <Link
+                  href="/items"
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-3 p-4 rounded-2xl transition-all ${
+                    isActive('/items') ? "bg-sky-50 text-sky-700 border border-sky-100 shadow-sm" : "bg-white border border-slate-100 text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  <span className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${isActive('/items') ? "bg-sky-200 text-sky-800" : "bg-slate-100 text-slate-500"}`}>📦</span>
+                  <span className="font-semibold text-lg">All Products</span>
+                </Link>
+
+                <div className="grid grid-cols-2 gap-2">
+                   <Link
+                     href="/categories"
+                     onClick={() => setOpen(false)}
+                     className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl text-center transition-all ${
+                       isActive('/categories') ? "bg-sky-50 text-sky-700 border border-sky-100" : "bg-white border border-slate-100 text-slate-700 hover:bg-slate-50"
+                     }`}
+                   >
+                     <span className="text-2xl">📂</span>
+                     <span className="font-semibold text-sm">Categories</span>
+                   </Link>
+                   <Link
+                     href="/brands"
+                     onClick={() => setOpen(false)}
+                     className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl text-center transition-all ${
+                       isActive('/brands') ? "bg-sky-50 text-sky-700 border border-sky-100" : "bg-white border border-slate-100 text-slate-700 hover:bg-slate-50"
+                     }`}
+                   >
+                     <span className="text-2xl">🏷️</span>
+                     <span className="font-semibold text-sm">Brands</span>
+                   </Link>
+                   <Link
+                     href="/whats-new"
+                     onClick={() => setOpen(false)}
+                     className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl text-center transition-all ${
+                       isActive('/whats-new') ? "bg-sky-50 text-sky-700 border border-sky-100" : "bg-white border border-slate-100 text-slate-700 hover:bg-slate-50"
+                     }`}
+                   >
+                     <span className="text-2xl">✨</span>
+                     <span className="font-semibold text-sm">New</span>
+                   </Link>
+                   <Link
+                     href="/top-selling"
+                     onClick={() => setOpen(false)}
+                     className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl text-center transition-all ${
+                       isActive('/top-selling') ? "bg-sky-50 text-sky-700 border border-sky-100" : "bg-white border border-slate-100 text-slate-700 hover:bg-slate-50"
+                     }`}
+                   >
+                     <span className="text-2xl">🔥</span>
+                     <span className="font-semibold text-sm">Top Selling</span>
+                   </Link>
+                </div>
+                
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 mt-2">
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Promotions</p>
+                  <div className="space-y-2">
+                    <Link
+                      href="/promotion/monthly"
+                      onClick={() => setOpen(false)}
+                      className="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100 shadow-sm"
+                    >
+                      <span className="font-medium text-slate-700">Monthly Deals</span>
+                      <span className="text-sky-500">→</span>
+                    </Link>
+                    <Link
+                      href="/promotion/seasonal"
+                      onClick={() => setOpen(false)}
+                      className="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100 shadow-sm"
+                    >
+                      <span className="font-medium text-slate-700">Seasonal Offers</span>
+                      <span className="text-sky-500">→</span>
+                    </Link>
+                  </div>
+                </div>
+             </div>
+             
+             {/* User Section */}
+             <div className="border-t border-slate-100 pt-6">
+               {auth?.authenticated ? (
+                 <div className="bg-slate-900 rounded-3xl p-5 text-white shadow-xl shadow-slate-200">
+                   <div className="flex items-center gap-4 mb-6">
+                     <div className="h-14 w-14 rounded-2xl bg-sky-500 flex items-center justify-center text-2xl font-bold shadow-lg shadow-sky-900/50">
+                       {computeInitials({ firstName: auth?.firstName ?? null, lastName: auth?.lastName ?? null })}
+                     </div>
+                     <div className="overflow-hidden">
+                       <p className="text-lg font-bold truncate">{auth.firstName || 'User'}</p>
+                       <p className="text-sm text-slate-400 truncate">{auth.email}</p>
+                     </div>
+                   </div>
+                   <div className="grid grid-cols-2 gap-3 mb-3">
+                      <a href="/admin" onClick={() => setOpen(false)} className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-800 hover:bg-slate-700 transition-colors">
+                        <span className="text-2xl mb-1">📊</span>
+                        <span className="text-xs font-medium text-slate-300">Dashboard</span>
+                      </a>
+                      <a href="/profile" onClick={() => setOpen(false)} className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-800 hover:bg-slate-700 transition-colors">
+                        <span className="text-2xl mb-1">👤</span>
+                        <span className="text-xs font-medium text-slate-300">Profile</span>
+                      </a>
+                   </div>
+                   <button
+                     onClick={async () => {
+                       try {
+                         await fetch("/api/auth/logout", { method: "POST" });
+                         setOpen(false);
+                         window.location.assign("/");
+                       } catch {}
+                     }}
+                     className="w-full py-3 rounded-xl bg-red-500/10 text-red-400 font-semibold border border-red-500/20 hover:bg-red-500/20 transition-colors"
+                   >
+                     Sign out
+                   </button>
+                 </div>
+               ) : (
+                 <div className="bg-slate-50 rounded-3xl p-6 border border-slate-100">
+                   <p className="text-center text-slate-600 mb-4 font-medium">Log in to manage your orders</p>
+                   <div className="grid gap-3">
+                     <a href="/auth/login" onClick={() => setOpen(false)} className="flex items-center justify-center h-12 rounded-xl bg-white border border-slate-200 text-base font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
+                       Log in
+                     </a>
+                     <a href="/auth/signup" onClick={() => setOpen(false)} className="flex items-center justify-center h-12 rounded-xl bg-sky-500 text-base font-bold text-white shadow-lg shadow-sky-200 hover:bg-sky-600 transition-colors">
+                       Create Account
+                     </a>
+                   </div>
+                 </div>
+               )}
+             </div>
+             
+             {/* Bottom Contact */}
+             <div className="pb-6">
+                <Link
+                  href="/contact"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-center gap-2 p-4 w-full rounded-2xl bg-slate-900 text-white font-semibold shadow-xl shadow-slate-200"
+                >
+                  <span>📞</span> Contact Support
+                </Link>
+             </div>
+           </div>
         </div>
       </div>
     </header>

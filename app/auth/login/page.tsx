@@ -172,11 +172,11 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const signup = sp?.signup as string | undefined;
 
   return (
-    <div className="min-h-screen bg-amber-50">
-      <div className="mx-auto max-w-md px-4 py-10 text-zinc-900">
+    <div className="min-h-screen bg-sky-50">
+      <div className="mx-auto max-w-md px-4 py-10 text-slate-900">
         <h1 className="text-2xl font-bold mb-6">Log in to your account</h1>
 
-        <div className="rounded-lg border border-amber-200 bg-white p-6 shadow-sm">
+        <div className="rounded-lg border border-sky-200 bg-white p-6 shadow-sm">
           {signup === "success" && (
             <div className="mb-4 rounded border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
               Account created successfully. You can log in now.
@@ -191,21 +191,21 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <form action={login} className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-1" htmlFor="email">Email</label>
-              <input id="email" name="email" type="email" required className="w-full rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"/>
+              <input id="email" name="email" type="email" required className="w-full rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"/>
             </div>
             <div>
               <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
-              <input id="password" name="password" type="password" required className="w-full rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"/>
+              <input id="password" name="password" type="password" required className="w-full rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"/>
             </div>
 
-            <button type="submit" className="inline-flex h-10 items-center justify-center rounded-full bg-amber-500 px-5 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400">
+            <button type="submit" className="inline-flex h-10 items-center justify-center rounded-full bg-sky-500 px-5 text-sm font-semibold text-slate-900 shadow hover:bg-sky-400">
               Log in
             </button>
           </form>
         </div>
 
-        <p className="mt-4 text-sm text-zinc-700">
-          Don't have an account? <a className="text-amber-700 hover:underline" href="/auth/signup">Create one</a>
+        <p className="mt-4 text-sm text-slate-700">
+          Don't have an account? <a className="text-sky-700 hover:underline" href="/auth/signup">Create one</a>
         </p>
       </div>
     </div>

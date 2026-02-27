@@ -118,15 +118,15 @@ export default async function BrandDetailPage({
 
   if (!brand) {
     return (
-      <div className="min-h-screen bg-white text-zinc-900">
+      <div className="min-h-screen bg-white text-slate-900">
         <Navbar />
         <main className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
             Brand Not Found
           </h1>
-          <p className="mt-2 text-sm text-zinc-600">
+          <p className="mt-2 text-sm text-slate-600">
             We couldn&apos;t find this brand. Go back to{" "}
-            <Link className="text-amber-700 hover:underline" href="/brands">
+            <Link className="text-sky-700 hover:underline" href="/brands">
               Brands
             </Link>
             .
@@ -137,7 +137,7 @@ export default async function BrandDetailPage({
   }
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
+    <div className="min-h-screen bg-white text-slate-900">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         {/* Hero */}
@@ -169,13 +169,13 @@ export default async function BrandDetailPage({
         <div className="mt-3 flex items-center gap-2">
           <Link
             href="/brands"
-            className="inline-flex h-9 items-center rounded-full border border-black/10 px-4 text-sm font-medium hover:bg-zinc-50"
+            className="inline-flex h-9 items-center rounded-full border border-black/10 px-4 text-sm font-medium hover:bg-slate-50"
           >
             Back to Brands
           </Link>
           <Link
             href="/contact"
-            className="inline-flex h-9 items-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400"
+            className="inline-flex h-9 items-center rounded-full bg-sky-500 px-4 text-sm font-semibold text-slate-900 shadow hover:bg-sky-400"
           >
             Get a Quote
           </Link>
@@ -185,7 +185,7 @@ export default async function BrandDetailPage({
         <section className="mt-6">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             {products.length === 0 ? (
-              <div className="col-span-full text-sm text-zinc-600">
+              <div className="col-span-full text-sm text-slate-600">
                 No products available from this brand yet.
               </div>
             ) : (

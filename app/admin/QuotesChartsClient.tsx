@@ -9,7 +9,7 @@ export function QuotesTrendChart({ data }: QuotesTrendChartProps) {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
   if (!data || data.length === 0) {
-    return <p className="text-[11px] text-zinc-400">No quotes in the last 7 days.</p>;
+    return <p className="text-[11px] text-slate-400">No quotes in the last 7 days.</p>;
   }
 
   const max = data.reduce((m, pt) => Math.max(m, pt.count), 0) || 1;
@@ -17,7 +17,7 @@ export function QuotesTrendChart({ data }: QuotesTrendChartProps) {
   return (
     <div className="relative h-16 w-full">
       {hoverIndex != null && data[hoverIndex] && (
-        <div className="pointer-events-none absolute -top-2 left-1/2 z-10 -translate-x-1/2 rounded bg-zinc-900 px-2 py-1 text-[10px] text-white shadow">
+        <div className="pointer-events-none absolute -top-2 left-1/2 z-10 -translate-x-1/2 rounded bg-slate-900 px-2 py-1 text-[10px] text-white shadow">
           <div>{data[hoverIndex].label}</div>
           <div className="font-semibold">{data[hoverIndex].count} quotes</div>
         </div>
@@ -71,7 +71,7 @@ export function TopProductsBarChart({ products }: TopProductsBarChartProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   if (!products || products.length === 0) {
-    return <p className="text-xs text-zinc-500">No product data available.</p>;
+    return <p className="text-xs text-slate-500">No product data available.</p>;
   }
 
   const max = products.reduce((m, p) => Math.max(m, p.itemquery), 0) || 1;
@@ -84,17 +84,17 @@ export function TopProductsBarChart({ products }: TopProductsBarChartProps) {
         return (
           <div
             key={p.barcode}
-            className={`space-y-1 rounded-md px-2 py-1 ${active ? "bg-amber-50" : ""}`}
+            className={`space-y-1 rounded-md px-2 py-1 ${active ? "bg-sky-50" : ""}`}
             onMouseEnter={() => setActiveIndex(idx)}
             onMouseLeave={() => setActiveIndex(null)}
           >
-            <div className="flex items-center justify-between text-xs text-zinc-700">
+            <div className="flex items-center justify-between text-xs text-slate-700">
               <span className="truncate max-w-[70%]">{p.productname}</span>
-              <span className="font-mono text-[10px] text-zinc-500">{p.itemquery}</span>
+              <span className="font-mono text-[10px] text-slate-500">{p.itemquery}</span>
             </div>
-            <div className="h-2 rounded-full bg-zinc-100 overflow-hidden">
+            <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
               <div
-                className={`h-2 rounded-full ${active ? "bg-amber-600" : "bg-amber-500"}`}
+                className={`h-2 rounded-full ${active ? "bg-sky-600" : "bg-sky-500"}`}
                 style={{ width: `${width}%` }}
               />
             </div>
@@ -102,9 +102,9 @@ export function TopProductsBarChart({ products }: TopProductsBarChartProps) {
         );
       })}
       {activeIndex != null && products[activeIndex] && (
-        <div className="mt-2 rounded-md border border-amber-100 bg-amber-50 px-2 py-1 text-[11px] text-zinc-800">
+        <div className="mt-2 rounded-md border border-sky-100 bg-sky-50 px-2 py-1 text-[11px] text-slate-800">
           <div className="font-medium truncate">{products[activeIndex].productname}</div>
-          <div className="font-mono text-[10px] text-zinc-500 truncate">{products[activeIndex].barcode}</div>
+          <div className="font-mono text-[10px] text-slate-500 truncate">{products[activeIndex].barcode}</div>
           <div>{products[activeIndex].itemquery} itemquery hits</div>
         </div>
       )}

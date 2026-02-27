@@ -108,7 +108,7 @@ export async function GET(req: Request) {
     const pool = typeof cfg === "string" ? mysql.createPool(cfg) : mysql.createPool(cfg);
 
     const [rows] = await pool.query<RowDataPacket[]>(
-      `SELECT id, productname, category, brand, barcode, caseSize, palletQty , picture, status, promotion_type, created_at
+      `SELECT id, productname, category, brand, barcode, caseSize, palletQty , picture, status, promotion_type, is_top_selling, created_at
        FROM products ${whereSql}
        ORDER BY ${sortField} ${order}
        LIMIT ? OFFSET ?`,
@@ -144,15 +144,25 @@ export async function POST(req: Request) {
   const category = String(body.category || "").trim();
   const brand = String(body.brand || "").trim();
   const barcode = String(body.barcode || "").trim();
-  const caseSize = Number(body.caseSize || 0);
-  const palletQty  = Number(body.palletQty  || 0);
+  
+  // caseSize treated as string for v3 schema compatibility
+  const caseSize = String(body.caseSize || "").trim();
+  
+  // palletQty optional/nullable
+  let palletQty: number | null = null;
+  if (body.palletQty !== undefined && body.palletQty !== null && body.palletQty !== "") {
+    palletQty = Number(body.palletQty);
+  }
+
   const picture = String(body.picture || "").trim();
   const status = (String(body.status || "AVAILABLE").toUpperCase() === "UNAVAILABLE") ? "UNAVAILABLE" : "AVAILABLE";
   const itemquery = Number(body.itemquery || 0);
   const promoRaw = String(body.promotion_type || "").toUpperCase();
   const promotion_type = promoRaw === "MONTHLY" || promoRaw === "SEASONAL" ? promoRaw : null;
+  const is_top_selling = body.is_top_selling === true || body.is_top_selling === 1 || String(body.is_top_selling) === "true";
 
-  if (!productname || !category || !barcode || !picture || !caseSize || !palletQty ) {
+  // Relaxed validation
+  if (!productname || !category || !barcode || !picture || !caseSize) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
@@ -160,16 +170,13 @@ export async function POST(req: Request) {
     const cfg = getConnectionConfig();
     const pool = typeof cfg === "string" ? mysql.createPool(cfg) : mysql.createPool(cfg);
 
-    const picture_key = String(body.picture_key || picture || "");
-    const mime_type = body.mime_type ? String(body.mime_type) : null;
-    const size_bytes = body.size_bytes ? Number(body.size_bytes) : null;
-    const width = body.width ? Number(body.width) : null;
-    const height = body.height ? Number(body.height) : null;
+    // picture_key, mime_type, size_bytes, width, height are not in the current schema
+    // and caused "Unknown column" errors. Removed them from INSERT query.
 
     const [res] = await pool.execute<ResultSetHeader>(
-      `INSERT INTO products (productname, category, brand, barcode, caseSize, palletQty , picture, picture_key, mime_type, size_bytes, width, height, itemquery, status, promotion_type)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [productname, category, brand || null, barcode, caseSize, palletQty , picture, picture_key || null, mime_type, size_bytes, width, height, itemquery || 1, status, promotion_type]
+      `INSERT INTO products (productname, category, brand, barcode, caseSize, palletQty, picture, itemquery, status, promotion_type, is_top_selling, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
+      [productname, category, brand || null, barcode, caseSize, palletQty, picture, itemquery || 1, status, promotion_type, is_top_selling]
     );
 
     await pool.end();

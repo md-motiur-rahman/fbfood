@@ -155,11 +155,11 @@ export default function AdminCarouselPage() {
   }
 
   return (
-    <div className="min-h-screen bg-amber-50 text-zinc-900">
+    <div className="min-h-screen bg-sky-50 text-slate-900">
       <div className="mx-auto max-w-6xl px-4 py-6">
         <div className="flex items-center justify-between gap-3 mb-4">
           <h1 className="text-xl font-semibold">Carousel Slides</h1>
-          <button onClick={() => setModalOpen(true)} className="inline-flex h-9 items-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400">
+          <button onClick={() => setModalOpen(true)} className="inline-flex h-9 items-center rounded-full bg-sky-500 px-4 text-sm font-semibold text-slate-900 shadow hover:bg-sky-400">
             Add Slide
           </button>
         </div>
@@ -169,19 +169,19 @@ export default function AdminCarouselPage() {
             value={q}
             onChange={(e) => { setPage(1); setQ(e.target.value); }}
             placeholder="Search title, subtitle, href"
-            className="w-72 rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"
+            className="w-72 rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"
           />
           <div className="ml-auto flex items-center gap-2 text-sm">
             <span>Rows per page</span>
-            <select value={pageSize} onChange={(e) => { setPage(1); setPageSize(Number(e.target.value)); }} className="rounded border border-amber-200 px-2 py-1 outline-none">
+            <select value={pageSize} onChange={(e) => { setPage(1); setPageSize(Number(e.target.value)); }} className="rounded border border-sky-200 px-2 py-1 outline-none">
               {PAGE_SIZES.map((n) => <option key={n} value={n}>{n}</option>)}
             </select>
           </div>
         </div>
 
-        <div className="overflow-auto rounded border border-amber-200 bg-white">
+        <div className="overflow-auto rounded border border-sky-200 bg-white">
           <table className="min-w-full text-sm">
-            <thead className="bg-amber-50">
+            <thead className="bg-sky-50">
               <tr className="text-left">
                 <th className="px-3 py-2 cursor-pointer" onClick={() => toggleSort("sort_order")}>
                   Order
@@ -196,27 +196,27 @@ export default function AdminCarouselPage() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={7} className="px-3 py-6 text-center text-zinc-600">Loading...</td></tr>
+                <tr><td colSpan={7} className="px-3 py-6 text-center text-slate-600">Loading...</td></tr>
               ) : error ? (
                 <tr><td colSpan={7} className="px-3 py-6 text-center text-red-700">{error}</td></tr>
               ) : items.length === 0 ? (
-                <tr><td colSpan={7} className="px-3 py-6 text-center text-zinc-600">No slides found</td></tr>
+                <tr><td colSpan={7} className="px-3 py-6 text-center text-slate-600">No slides found</td></tr>
               ) : (
                 items.map((s) => (
-                  <tr key={s.id} className="border-t border-amber-100 hover:bg-amber-50/50">
+                  <tr key={s.id} className="border-t border-sky-100 hover:bg-sky-50/50">
                     <td className="px-3 py-2 font-mono text-xs">{s.sort_order}</td>
-                    <td className="px-3 py-2">{s.img ? <Image src={s.img} alt={s.title || "slide"} width={64} height={40} className="h-10 w-16 object-cover rounded" unoptimized={s.img.startsWith("http")} /> : <span className="text-zinc-500">—</span>}</td>
-                    <td className="px-3 py-2">{s.title || <span className="text-zinc-500">—</span>}</td>
+                    <td className="px-3 py-2">{s.img ? <Image src={s.img} alt={s.title || "slide"} width={64} height={40} className="h-10 w-16 object-cover rounded" unoptimized={s.img.startsWith("http")} /> : <span className="text-slate-500">—</span>}</td>
+                    <td className="px-3 py-2">{s.title || <span className="text-slate-500">—</span>}</td>
                     <td className="px-3 py-2 font-mono text-xs truncate max-w-[200px]">{s.href}</td>
                     <td className="px-3 py-2">
-                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${s.is_active ? 'bg-green-100 text-green-800' : 'bg-zinc-200 text-zinc-800'}`}>
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${s.is_active ? 'bg-green-100 text-green-800' : 'bg-slate-200 text-slate-800'}`}>
                         {s.is_active ? 'YES' : 'NO'}
                       </span>
                     </td>
                     <td className="px-3 py-2">{new Date(s.created_at).toLocaleDateString()}</td>
                     <td className="px-3 py-2">
                       <div className="flex items-center gap-2">
-                        <button onClick={() => onEditStart(s)} className="rounded border border-amber-200 px-2 py-1 text-xs hover:bg-amber-50">Edit</button>
+                        <button onClick={() => onEditStart(s)} className="rounded border border-sky-200 px-2 py-1 text-xs hover:bg-sky-50">Edit</button>
                         <button onClick={() => onDelete(s.id)} className="rounded border border-red-300 px-2 py-1 text-xs text-red-700 hover:bg-red-50">Delete</button>
                       </div>
                     </td>
@@ -232,11 +232,11 @@ export default function AdminCarouselPage() {
             Showing {items.length} of {total} items
           </div>
           <div className="flex items-center gap-2">
-            <button disabled={page <= 1} onClick={() => setPage(1)} className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50">« First</button>
-            <button disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))} className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50">‹ Prev</button>
+            <button disabled={page <= 1} onClick={() => setPage(1)} className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50">« First</button>
+            <button disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))} className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50">‹ Prev</button>
             <span>Page {page} of {pages}</span>
-            <button disabled={page >= pages} onClick={() => setPage((p) => Math.min(pages, p + 1))} className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50">Next ›</button>
-            <button disabled={page >= pages} onClick={() => setPage(pages)} className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50">Last »</button>
+            <button disabled={page >= pages} onClick={() => setPage((p) => Math.min(pages, p + 1))} className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50">Next ›</button>
+            <button disabled={page >= pages} onClick={() => setPage(pages)} className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50">Last »</button>
           </div>
         </div>
       </div>
@@ -244,36 +244,36 @@ export default function AdminCarouselPage() {
       {/* Add Slide Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-lg rounded-lg border border-amber-200 bg-white p-5 shadow-xl">
+          <div className="w-full max-w-lg rounded-lg border border-sky-200 bg-white p-5 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">Add Slide</h2>
-              <button onClick={() => setModalOpen(false)} className="text-zinc-600 hover:text-zinc-900">✕</button>
+              <button onClick={() => setModalOpen(false)} className="text-slate-600 hover:text-slate-900">✕</button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <label className="text-sm">Title<input value={form.title} onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2"/></label>
-              <label className="text-sm">Subtitle<input value={form.subtitle} onChange={(e) => setForm((s) => ({ ...s, subtitle: e.target.value }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2"/></label>
+              <label className="text-sm">Title<input value={form.title} onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2"/></label>
+              <label className="text-sm">Subtitle<input value={form.subtitle} onChange={(e) => setForm((s) => ({ ...s, subtitle: e.target.value }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2"/></label>
               <label className="text-sm">Link (page)
-                <select value={form.href} onChange={(e) => setForm((s) => ({ ...s, href: e.target.value }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2">
+                <select value={form.href} onChange={(e) => setForm((s) => ({ ...s, href: e.target.value }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2">
                   {HREF_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                 </select>
               </label>
-              <label className="text-sm">Sort Order<input type="number" value={form.sort_order} onChange={(e) => setForm((s) => ({ ...s, sort_order: Number(e.target.value) }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2"/></label>
+              <label className="text-sm">Sort Order<input type="number" value={form.sort_order} onChange={(e) => setForm((s) => ({ ...s, sort_order: Number(e.target.value) }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2"/></label>
               <label className="text-sm">Image
                 <input type="file" accept="image/*" onChange={async (e) => {
                   const f = e.target.files?.[0];
                   if (f) { try { await onUploadImage(f); } catch (err) { const msg = err instanceof Error ? err.message : "Upload failed"; alert(msg); } }
-                }} className="mt-1 w-full rounded border border-amber-200 px-3 py-2" />
+                }} className="mt-1 w-full rounded border border-sky-200 px-3 py-2" />
               </label>
               <label className="text-sm">Active
-                <select value={form.is_active} onChange={(e) => setForm((s) => ({ ...s, is_active: Number(e.target.value) as 0 | 1 }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2">
+                <select value={form.is_active} onChange={(e) => setForm((s) => ({ ...s, is_active: Number(e.target.value) as 0 | 1 }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2">
                   <option value={1}>Yes</option>
                   <option value={0}>No</option>
                 </select>
               </label>
             </div>
             <div className="mt-4 flex items-center justify-end gap-2">
-              <button onClick={() => setModalOpen(false)} className="rounded border border-amber-200 px-3 py-2 text-sm">Cancel</button>
-              <button onClick={onCreate} className="rounded bg-amber-500 px-3 py-2 text-sm font-semibold text-zinc-900 hover:bg-amber-400">Create</button>
+              <button onClick={() => setModalOpen(false)} className="rounded border border-sky-200 px-3 py-2 text-sm">Cancel</button>
+              <button onClick={onCreate} className="rounded bg-sky-500 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-sky-400">Create</button>
             </div>
           </div>
         </div>
@@ -282,36 +282,36 @@ export default function AdminCarouselPage() {
       {/* Edit Slide Modal */}
       {editModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-lg rounded-lg border border-amber-200 bg-white p-5 shadow-xl">
+          <div className="w-full max-w-lg rounded-lg border border-sky-200 bg-white p-5 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">Edit Slide</h2>
-              <button onClick={() => setEditModalOpen(false)} className="text-zinc-600 hover:text-zinc-900">✕</button>
+              <button onClick={() => setEditModalOpen(false)} className="text-slate-600 hover:text-slate-900">✕</button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <label className="text-sm">Title<input value={form.title} onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2"/></label>
-              <label className="text-sm">Subtitle<input value={form.subtitle} onChange={(e) => setForm((s) => ({ ...s, subtitle: e.target.value }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2"/></label>
+              <label className="text-sm">Title<input value={form.title} onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2"/></label>
+              <label className="text-sm">Subtitle<input value={form.subtitle} onChange={(e) => setForm((s) => ({ ...s, subtitle: e.target.value }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2"/></label>
               <label className="text-sm">Link (page)
-                <select value={form.href} onChange={(e) => setForm((s) => ({ ...s, href: e.target.value }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2">
+                <select value={form.href} onChange={(e) => setForm((s) => ({ ...s, href: e.target.value }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2">
                   {HREF_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                 </select>
               </label>
-              <label className="text-sm">Sort Order<input type="number" value={form.sort_order} onChange={(e) => setForm((s) => ({ ...s, sort_order: Number(e.target.value) }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2"/></label>
+              <label className="text-sm">Sort Order<input type="number" value={form.sort_order} onChange={(e) => setForm((s) => ({ ...s, sort_order: Number(e.target.value) }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2"/></label>
               <label className="text-sm">Image
                 <input type="file" accept="image/*" onChange={async (e) => {
                   const f = e.target.files?.[0];
                   if (f) { try { await onUploadImage(f); } catch (err) { const msg = err instanceof Error ? err.message : "Upload failed"; alert(msg); } }
-                }} className="mt-1 w-full rounded border border-amber-200 px-3 py-2" />
+                }} className="mt-1 w-full rounded border border-sky-200 px-3 py-2" />
               </label>
               <label className="text-sm">Active
-                <select value={form.is_active} onChange={(e) => setForm((s) => ({ ...s, is_active: Number(e.target.value) as 0 | 1 }))} className="mt-1 w-full rounded border border-amber-200 px-3 py-2">
+                <select value={form.is_active} onChange={(e) => setForm((s) => ({ ...s, is_active: Number(e.target.value) as 0 | 1 }))} className="mt-1 w-full rounded border border-sky-200 px-3 py-2">
                   <option value={1}>Yes</option>
                   <option value={0}>No</option>
                 </select>
               </label>
             </div>
             <div className="mt-4 flex items-center justify-end gap-2">
-              <button onClick={() => setEditModalOpen(false)} className="rounded border border-amber-200 px-3 py-2 text-sm">Cancel</button>
-              <button onClick={onUpdate} className="rounded bg-amber-500 px-3 py-2 text-sm font-semibold text-zinc-900 hover:bg-amber-400">Save</button>
+              <button onClick={() => setEditModalOpen(false)} className="rounded border border-sky-200 px-3 py-2 text-sm">Cancel</button>
+              <button onClick={onUpdate} className="rounded bg-sky-500 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-sky-400">Save</button>
             </div>
           </div>
         </div>

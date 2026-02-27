@@ -76,13 +76,13 @@ export default async function SeasonalPromotionPage() {
   const promos = await getSeasonalPromos();
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
+    <div className="min-h-screen bg-white text-slate-900">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Seasonal Promotion</h1>
-            <p className="mt-1 text-sm text-zinc-600">Seasonally curated highlights and offers.</p>
+            <p className="mt-1 text-sm text-slate-600">Seasonally curated highlights and offers.</p>
           </div>
         </header>
 

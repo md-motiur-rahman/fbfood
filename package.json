@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrate": "node --env-file=.env scripts/migrate.js"
   },
   "dependencies": {
     "@vercel/speed-insights": "^1.2.0",

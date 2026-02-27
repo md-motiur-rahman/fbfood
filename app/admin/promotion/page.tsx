@@ -109,11 +109,11 @@ export default function AdminPromotionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-amber-50 text-zinc-900">
+    <div className="min-h-screen bg-sky-50 text-slate-900">
       <div className="mx-auto max-w-6xl px-4 py-6">
         <div className="flex items-center justify-between gap-3 mb-4">
           <h1 className="text-xl font-semibold">Promotions</h1>
-          <button disabled={selected.size === 0} onClick={() => setApplyOpen(true)} className="inline-flex h-9 items-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400 disabled:opacity-50">
+          <button disabled={selected.size === 0} onClick={() => setApplyOpen(true)} className="inline-flex h-9 items-center rounded-full bg-sky-500 px-4 text-sm font-semibold text-slate-900 shadow hover:bg-sky-400 disabled:opacity-50">
             Apply to {selected.size} selected
           </button>
         </div>
@@ -123,19 +123,19 @@ export default function AdminPromotionPage() {
             value={q}
             onChange={(e) => { setPage(1); setQ(e.target.value); }}
             placeholder="Search product, barcode, category, brand"
-            className="w-80 rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"
+            className="w-80 rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"
           />
           <div className="ml-auto flex items-center gap-2 text-sm">
             <span>Rows per page</span>
-            <select value={pageSize} onChange={(e) => { setPage(1); setPageSize(Number(e.target.value)); }} className="rounded border border-amber-200 px-2 py-1 outline-none">
+            <select value={pageSize} onChange={(e) => { setPage(1); setPageSize(Number(e.target.value)); }} className="rounded border border-sky-200 px-2 py-1 outline-none">
               {PAGE_SIZES.map((n) => <option key={n} value={n}>{n}</option>)}
             </select>
           </div>
         </div>
 
-        <div className="overflow-auto rounded border border-amber-200 bg-white">
+        <div className="overflow-auto rounded border border-sky-200 bg-white">
           <table className="min-w-full text-sm">
-            <thead className="bg-amber-50">
+            <thead className="bg-sky-50">
               <tr className="text-left">
                 <th className="px-3 py-2"><input type="checkbox" checked={allSelected} onChange={toggleAll} aria-label="Select all"/></th>
                 <th className="px-3 py-2 cursor-pointer" onClick={() => toggleSort("productname")}>Name</th>
@@ -149,21 +149,21 @@ export default function AdminPromotionPage() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={8} className="px-3 py-6 text-center text-zinc-600">Loading...</td></tr>
+                <tr><td colSpan={8} className="px-3 py-6 text-center text-slate-600">Loading...</td></tr>
               ) : error ? (
                 <tr><td colSpan={8} className="px-3 py-6 text-center text-red-700">{error}</td></tr>
               ) : items.length === 0 ? (
-                <tr><td colSpan={8} className="px-3 py-6 text-center text-zinc-600">No products found</td></tr>
+                <tr><td colSpan={8} className="px-3 py-6 text-center text-slate-600">No products found</td></tr>
               ) : (
                 items.map((p) => (
-                  <tr key={p.id} className="border-t border-amber-100 hover:bg-amber-50/50">
+                  <tr key={p.id} className="border-t border-sky-100 hover:bg-sky-50/50">
                     <td className="px-3 py-2"><input type="checkbox" checked={selected.has(p.id)} onChange={() => toggleOne(p.id)} aria-label={`Select ${p.productname}`}/></td>
                     <td className="px-3 py-2 font-medium">{p.productname}</td>
-                    <td className="px-3 py-2">{p.picture ? <Image src={p.picture} alt={p.productname} width={36} height={36} className="h-9 w-9 object-cover rounded" unoptimized={p.picture.startsWith("http")} /> : <span className="text-zinc-500">—</span>}</td>
+                    <td className="px-3 py-2">{p.picture ? <Image src={p.picture} alt={p.productname} width={36} height={36} className="h-9 w-9 object-cover rounded" unoptimized={p.picture.startsWith("http")} /> : <span className="text-slate-500">—</span>}</td>
                     <td className="px-3 py-2">{p.category}</td>
-                    <td className="px-3 py-2">{p.brand || <span className="text-zinc-500">—</span>}</td>
+                    <td className="px-3 py-2">{p.brand || <span className="text-slate-500">—</span>}</td>
                     <td className="px-3 py-2 font-mono text-xs">{p.barcode}</td>
-                    <td className="px-3 py-2">{p.promotion_type || <span className="text-zinc-500">None</span>}</td>
+                    <td className="px-3 py-2">{p.promotion_type || <span className="text-slate-500">None</span>}</td>
                     <td className="px-3 py-2">{new Date(p.created_at).toLocaleDateString()}</td>
                   </tr>
                 ))
@@ -177,11 +177,11 @@ export default function AdminPromotionPage() {
             Showing {items.length} of {total} items
           </div>
           <div className="flex items-center gap-2">
-            <button disabled={page <= 1} onClick={() => setPage(1)} className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50">« First</button>
-            <button disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))} className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50">‹ Prev</button>
+            <button disabled={page <= 1} onClick={() => setPage(1)} className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50">« First</button>
+            <button disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))} className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50">‹ Prev</button>
             <span>Page {page} of {pages}</span>
-            <button disabled={page >= pages} onClick={() => setPage((p) => Math.min(pages, p + 1))} className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50">Next ›</button>
-            <button disabled={page >= pages} onClick={() => setPage(pages)} className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50">Last »</button>
+            <button disabled={page >= pages} onClick={() => setPage((p) => Math.min(pages, p + 1))} className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50">Next ›</button>
+            <button disabled={page >= pages} onClick={() => setPage(pages)} className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50">Last »</button>
           </div>
         </div>
       </div>
@@ -189,24 +189,24 @@ export default function AdminPromotionPage() {
       {/* Apply Promotion Modal */}
       {applyOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-lg border border-amber-200 bg-white p-5 shadow-xl">
+          <div className="w-full max-w-md rounded-lg border border-sky-200 bg-white p-5 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">Apply Promotion</h2>
-              <button onClick={() => setApplyOpen(false)} className="text-zinc-600 hover:text-zinc-900">✕</button>
+              <button onClick={() => setApplyOpen(false)} className="text-slate-600 hover:text-slate-900">✕</button>
             </div>
             <div className="grid gap-3">
               <label className="text-sm">Promotion Type
-                <select value={promType} onChange={(e) => setPromType(e.target.value as "" | "MONTHLY" | "SEASONAL")} className="mt-1 w-full rounded border border-amber-200 px-3 py-2">
+                <select value={promType} onChange={(e) => setPromType(e.target.value as "" | "MONTHLY" | "SEASONAL")} className="mt-1 w-full rounded border border-sky-200 px-3 py-2">
                   <option value="">None (clear)</option>
                   <option value="MONTHLY">MONTHLY</option>
                   <option value="SEASONAL">SEASONAL</option>
                 </select>
               </label>
-              <div className="text-xs text-zinc-600">This will update {selected.size} product(s).</div>
+              <div className="text-xs text-slate-600">This will update {selected.size} product(s).</div>
             </div>
             <div className="mt-4 flex items-center justify-end gap-2">
-              <button onClick={() => setApplyOpen(false)} className="rounded border border-amber-200 px-3 py-2 text-sm">Cancel</button>
-              <button onClick={applyPromotion} className="rounded bg-amber-500 px-3 py-2 text-sm font-semibold text-zinc-900 hover:bg-amber-400">Apply</button>
+              <button onClick={() => setApplyOpen(false)} className="rounded border border-sky-200 px-3 py-2 text-sm">Cancel</button>
+              <button onClick={applyPromotion} className="rounded bg-sky-500 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-sky-400">Apply</button>
             </div>
           </div>
         </div>

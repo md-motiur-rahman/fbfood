@@ -59,7 +59,7 @@ async function getTopSelling() {
   const cfg = getConnectionConfig();
   const pool = typeof cfg === "string" ? mysql.createPool(cfg) : mysql.createPool(cfg);
   const [rows] = await pool.query<RowDataPacket[]>(
-    "SELECT productname, barcode, picture, status FROM products ORDER BY itemquery DESC, created_at DESC LIMIT 16"
+    "SELECT productname, barcode, picture, status FROM products WHERE is_top_selling = 1 ORDER BY itemquery DESC, created_at DESC LIMIT 16"
   );
   await pool.end();
   return rows as { productname: string; barcode: string; picture: string; status: "AVAILABLE" | "UNAVAILABLE" }[];
@@ -68,11 +68,11 @@ async function getTopSelling() {
 export default async function TopSellingPage() {
   const items = await getTopSelling();
     return (
-    <div className="min-h-screen bg-white text-zinc-900">
+    <div className="min-h-screen bg-white text-slate-900">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Top Selling</h1>
-        <p className="mt-2 text-sm text-zinc-600">Best performing products by demand.</p>
+        <p className="mt-2 text-sm text-slate-600">Best performing products by demand.</p>
         <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {items.map((p) => (
             <ProductCard

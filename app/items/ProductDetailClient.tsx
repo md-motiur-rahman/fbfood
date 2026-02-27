@@ -46,10 +46,10 @@ export default function ProductDetailClient({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
           {productname}
         </h1>
-        <p className="mt-2 text-sm font-semibold text-zinc-800">
+        <p className="mt-2 text-sm font-semibold text-slate-800">
           Pack &amp; Size: <span className="font-normal">{caseSize || "—"}</span>
         </p>
 
@@ -58,7 +58,7 @@ export default function ProductDetailClient({
           <div className="inline-flex h-10 items-stretch rounded-full border border-black/10 bg-white text-sm">
             <button
               type="button"
-              className="px-3 text-zinc-700 hover:bg-zinc-50"
+              className="px-3 text-slate-700 hover:bg-slate-50"
               aria-label="Decrease quantity"
               onClick={() => adjust(-1)}
             >
@@ -73,7 +73,7 @@ export default function ProductDetailClient({
             />
             <button
               type="button"
-              className="px-3 text-zinc-700 hover:bg-zinc-50"
+              className="px-3 text-slate-700 hover:bg-slate-50"
               aria-label="Increase quantity"
               onClick={() => adjust(1)}
             >
@@ -85,14 +85,14 @@ export default function ProductDetailClient({
               type="button"
               disabled={submitting}
               onClick={onAddToQuote}
-              className="inline-flex h-10 items-center justify-center rounded-full bg-amber-600 px-6 text-sm font-semibold text-white shadow hover:bg-amber-500 disabled:opacity-60 whitespace-nowrap"
+              className="inline-flex h-10 items-center justify-center rounded-full bg-sky-600 px-6 text-sm font-semibold text-white shadow hover:bg-sky-500 disabled:opacity-60 whitespace-nowrap"
             >
               + ADD TO QUOTE
             </button>
           ) : (
             <button
               type="button"
-              className="inline-flex h-10 items-center justify-center rounded-full border border-black/10 px-4 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 gap-2 whitespace-nowrap"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-black/10 px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50 gap-2 whitespace-nowrap"
             >
               <span className="text-rose-600">❤</span>
               Add to wishlist
@@ -100,10 +100,10 @@ export default function ProductDetailClient({
           )}
         </div>
 
-        <div className="mt-3 text-xs text-zinc-600">
+        <div className="mt-3 text-xs text-slate-600">
           <span className="font-semibold">Brand: </span>
           {brandSlug && brandName ? (
-            <Link href={`/brands/${brandSlug}`} className="text-amber-700 hover:underline">
+            <Link href={`/brands/${brandSlug}`} className="text-sky-700 hover:underline">
               {brandName}
             </Link>
           ) : (
@@ -112,7 +112,7 @@ export default function ProductDetailClient({
           <span className="mx-2">•</span>
           <span className="font-semibold">Category: </span>
           {categorySlug && categoryName ? (
-            <Link href={`/categories/${categorySlug}`} className="text-amber-700 hover:underline">
+            <Link href={`/categories/${categorySlug}`} className="text-sky-700 hover:underline">
               {categoryName}
             </Link>
           ) : (

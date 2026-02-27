@@ -69,13 +69,13 @@ export default async function PromotionPage() {
   const promos = await getPromos();
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
+    <div className="min-h-screen bg-white text-slate-900">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Promotion</h1>
-            <p className="mt-1 text-sm text-zinc-600">Featured deals and highlighted products for quick stocking.</p>
+            <p className="mt-1 text-sm text-slate-600">Featured deals and highlighted products for quick stocking.</p>
           </div>
         </header>
 

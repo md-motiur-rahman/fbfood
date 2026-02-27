@@ -11,7 +11,7 @@ function getConnectionConfig(): string | PoolOptions {
   const rejectUnauth = !(String(process.env.DATABASE_SSL_REJECT_UNAUTHORIZED || "").toLowerCase() === "false" || String(process.env.DATABASE_SSL_REJECT_UNAUTHORIZED || "") === "0");
 
   if (rawUrl) {
-    const cleaned = rawUrl.replace(/^\"|\"$/g, "").replace(/^'|'$/g, "");
+    const cleaned = rawUrl.replace(/^"|"$/g, "").replace(/^'|'$/g, "");
     try {
       const u = new URL(cleaned);
       const cfg: PoolOptions = {
@@ -29,7 +29,7 @@ function getConnectionConfig(): string | PoolOptions {
       }
       return cfg;
     } catch {
-      return cleaned; // let driver parse raw URI
+      return cleaned;
     }
   }
   const host = process.env.DATABASE_HOST;
@@ -81,17 +81,31 @@ export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }
 
   const productname = String(b.productname ?? "").trim();
   const category = String((b.category ?? "")).trim();
-  const outerbarcode = String(b.outerbarcode ?? "").trim();
-  const caseSize = Number(b.caseSize ?? 0);
-  const palletSize = Number(b.palletSize ?? 0);
+  // Fixed: outerbarcode -> barcode
+  const barcode = String(b.barcode ?? b.outerbarcode ?? "").trim();
+  
+  // caseSize is VARCHAR in new schema, but might be INT in old. Treat as string to be safe.
+  const caseSize = String(b.caseSize ?? "").trim();
+  
+  // palletQty is optional (nullable INT) in new schema.
+  // Handle 'palletSize' alias for backward compat.
+  let palletQty: number | null = null;
+  if (b.palletQty !== undefined && b.palletQty !== null && b.palletQty !== "") {
+    palletQty = Number(b.palletQty);
+  } else if (b.palletSize !== undefined && b.palletSize !== null && b.palletSize !== "") {
+    palletQty = Number(b.palletSize);
+  }
+
   const picture = String(b.picture ?? "").trim();
   const status = (String(b.status ?? "AVAILABLE").toUpperCase() === "UNAVAILABLE") ? "UNAVAILABLE" : "AVAILABLE";
   const itemquery = Number(b.itemquery ?? 0) || 1;
   const brand = b.brand != null ? String(b.brand) : null;
   const promoRaw = String(b.promotion_type ?? "").toUpperCase();
   const promotion_type = promoRaw === "MONTHLY" || promoRaw === "SEASONAL" ? promoRaw : null;
+  const is_top_selling = b.is_top_selling === true || b.is_top_selling === 1 || String(b.is_top_selling) === "true";
 
-  if (!productname || !category || !outerbarcode || !picture || !caseSize || !palletSize) {
+  // Relaxed validation: palletQty is optional. caseSize must be present (as string).
+  if (!productname || !category || !barcode || !picture || !caseSize) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
@@ -99,15 +113,10 @@ export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }
     const cfg = getConnectionConfig();
     const pool = typeof cfg === "string" ? mysql.createPool(cfg) : mysql.createPool(cfg);
 
-    const picture_key = String((b.picture_key ?? picture) ?? "");
-    const mime_type = b.mime_type != null ? String(b.mime_type) : null;
-    const size_bytes = b.size_bytes != null ? Number(b.size_bytes) : null;
-    const width = b.width != null ? Number(b.width) : null;
-    const height = b.height != null ? Number(b.height) : null;
-
+    // picture_key, mime_type, size_bytes, width, height removed to match current DB schema
     const [res] = await pool.execute<ResultSetHeader>(
-      `UPDATE products SET productname=?, category=?, brand=?, outerbarcode=?, caseSize=?, palletSize=?, picture=?, picture_key=?, mime_type=?, size_bytes=?, width=?, height=?, itemquery=?, status=?, promotion_type=? WHERE id=?`,
-      [productname, category, brand, outerbarcode, caseSize, palletSize, picture, picture_key || null, mime_type, size_bytes, width, height, itemquery, status, promotion_type, id]
+      `UPDATE products SET productname=?, category=?, brand=?, barcode=?, caseSize=?, palletQty=?, picture=?, itemquery=?, status=?, promotion_type=?, is_top_selling=? WHERE id=?`,
+      [productname, category, brand, barcode, caseSize, palletQty, picture, itemquery, status, promotion_type, is_top_selling, id]
     );
 
     await pool.end();

@@ -70,18 +70,18 @@ export default async function WhatsNewPage() {
   const latest = await getLatest();
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
+    <div className="min-h-screen bg-white text-slate-900">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         {/* Header */}
         <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">What&apos;s New</h1>
-            <p className="mt-1 text-sm text-zinc-600">Latest 10 arrivals to quickly stock your shelves.</p>
+            <p className="mt-1 text-sm text-slate-600">Latest 10 arrivals to quickly stock your shelves.</p>
           </div>
           <div className="flex items-center gap-2">
-            <Link href="/items" className="inline-flex h-9 items-center rounded-full border border-black/10 px-4 text-sm font-medium hover:bg-zinc-50">All Items</Link>
-            <Link href="/contact" className="inline-flex h-9 items-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400">Get a Quote</Link>
+            <Link href="/items" className="inline-flex h-9 items-center rounded-full border border-black/10 px-4 text-sm font-medium hover:bg-slate-50">All Items</Link>
+            <Link href="/contact" className="inline-flex h-9 items-center rounded-full bg-sky-500 px-4 text-sm font-semibold text-slate-900 shadow hover:bg-sky-400">Get a Quote</Link>
           </div>
         </header>
 
@@ -99,7 +99,7 @@ export default async function WhatsNewPage() {
             />
           ))}
           {latest.length === 0 && (
-            <div className="col-span-full text-sm text-zinc-600">No new items at the moment. Check back soon!</div>
+            <div className="col-span-full text-sm text-slate-600">No new items at the moment. Check back soon!</div>
           )}
         </section>
       </main>

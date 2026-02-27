@@ -11,10 +11,11 @@ type Product = {
   brand?: string | null;
   barcode: string;
   caseSize: string;
-  palletQty : number;
+  palletQty: number | null;
   picture: string;
   status: "AVAILABLE" | "UNAVAILABLE";
   promotion_type?: "MONTHLY" | "SEASONAL" | null;
+  is_top_selling?: boolean | number;
   created_at: string;
 };
 
@@ -188,6 +189,29 @@ export default function AdminProductsPage() {
     });
   }
 
+  async function toggleTopSelling(product: Product) {
+    try {
+      const newVal = !product.is_top_selling;
+      // Optimistic update
+      setItems((prev) => prev.map((p) => p.id === product.id ? { ...p, is_top_selling: newVal } : p));
+      
+      const res = await fetch(`/api/admin/products/${product.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...product, is_top_selling: newVal }),
+      });
+      
+      if (!res.ok) {
+        // Revert
+        setItems((prev) => prev.map((p) => p.id === product.id ? { ...p, is_top_selling: !newVal } : p));
+        const data = await res.json();
+        throw new Error(data?.error || "Update failed");
+      }
+    } catch (e: any) {
+      alert(e.message || "Update failed");
+    }
+  }
+
   async function applyBulkStatus(status: "AVAILABLE" | "UNAVAILABLE") {
     if (selected.size === 0) {
       alert("No products selected");
@@ -290,7 +314,7 @@ export default function AdminProductsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-amber-50 text-zinc-900">
+    <div className="min-h-screen bg-sky-50 text-slate-900">
       <div className="mx-auto max-w-6xl px-4 py-6">
         <div className="flex items-center justify-between gap-3 mb-4">
           <h1 className="text-xl font-semibold">Products</h1>
@@ -305,7 +329,7 @@ export default function AdminProductsPage() {
             <button
               disabled={selected.size === 0}
               onClick={() => applyBulkStatus("UNAVAILABLE")}
-              className="inline-flex h-9 items-center rounded-full border border-amber-300 bg-amber-50 px-4 text-sm font-semibold text-amber-700 hover:bg-amber-100 disabled:opacity-50"
+              className="inline-flex h-9 items-center rounded-full border border-sky-300 bg-sky-50 px-4 text-sm font-semibold text-sky-700 hover:bg-sky-100 disabled:opacity-50"
             >
               Set Unavailable
             </button>
@@ -318,13 +342,13 @@ export default function AdminProductsPage() {
             </button>
             <button
               onClick={() => setBulkOpen(true)}
-              className="inline-flex h-9 items-center rounded-full bg-amber-200 px-4 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-100"
+              className="inline-flex h-9 items-center rounded-full bg-sky-200 px-4 text-sm font-semibold text-slate-900 shadow hover:bg-sky-100"
             >
               Bulk Upload CSV
             </button>
             <button
               onClick={() => setModalOpen(true)}
-              className="inline-flex h-9 items-center rounded-full bg-amber-500 px-4 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400"
+              className="inline-flex h-9 items-center rounded-full bg-sky-500 px-4 text-sm font-semibold text-slate-900 shadow hover:bg-sky-400"
             >
               Add Product
             </button>
@@ -339,7 +363,7 @@ export default function AdminProductsPage() {
               setQ(e.target.value);
             }}
             placeholder="Search product, barcode, category"
-            className="w-72 rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"
+            className="w-72 rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"
           />
           <div className="ml-auto flex items-center gap-2 text-sm">
             <span>Rows per page</span>
@@ -349,7 +373,7 @@ export default function AdminProductsPage() {
                 setPage(1);
                 setPageSize(Number(e.target.value));
               }}
-              className="rounded border border-amber-200 px-2 py-1 outline-none"
+              className="rounded border border-sky-200 px-2 py-1 outline-none"
             >
               {PAGE_SIZES.map((n) => (
                 <option key={n} value={n}>
@@ -360,9 +384,9 @@ export default function AdminProductsPage() {
           </div>
         </div>
 
-        <div className="overflow-auto rounded border border-amber-200 bg-white">
+        <div className="overflow-auto rounded border border-sky-200 bg-white">
           <table className="min-w-full text-sm">
-            <thead className="bg-amber-50">
+            <thead className="bg-sky-50">
               <tr className="text-left">
                 <th className="px-3 py-2">
                   <input
@@ -409,6 +433,7 @@ export default function AdminProductsPage() {
                 >
                   Status
                 </th>
+                <th className="px-3 py-2">Top Selling</th>
                 <th
                   className="px-3 py-2 cursor-pointer"
                   onClick={() => toggleSort("created_at")}
@@ -423,7 +448,7 @@ export default function AdminProductsPage() {
                 <tr>
                   <td
                     colSpan={10}
-                    className="px-3 py-6 text-center text-zinc-600"
+                    className="px-3 py-6 text-center text-slate-600"
                   >
                     Loading...
                   </td>
@@ -441,7 +466,7 @@ export default function AdminProductsPage() {
                 <tr>
                   <td
                     colSpan={10}
-                    className="px-3 py-6 text-center text-zinc-600"
+                    className="px-3 py-6 text-center text-slate-600"
                   >
                     No products found
                   </td>
@@ -450,7 +475,7 @@ export default function AdminProductsPage() {
                 items.map((p) => (
                   <tr
                     key={p.id}
-                    className="border-t border-amber-100 hover:bg-amber-50/50"
+                    className="border-t border-sky-100 hover:bg-sky-50/50"
                   >
                     <td className="px-3 py-2">
                       <input
@@ -478,7 +503,7 @@ export default function AdminProductsPage() {
                           unoptimized={p.picture.startsWith("http")}
                         />
                       ) : (
-                        <span className="text-zinc-500">—</span>
+                        <span className="text-slate-500">—</span>
                       )}
                     </td>
                     <td className="px-3 py-2">
@@ -486,11 +511,26 @@ export default function AdminProductsPage() {
                         className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
                           p.status === "AVAILABLE"
                             ? "bg-green-100 text-green-800"
-                            : "bg-zinc-200 text-zinc-800"
+                            : "bg-slate-200 text-slate-800"
                         }`}
                       >
                         {p.status}
                       </span>
+                    </td>
+                    <td className="px-3 py-2">
+                      <button
+                        onClick={() => toggleTopSelling(p)}
+                        className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 ${
+                          p.is_top_selling ? 'bg-sky-500' : 'bg-slate-200'
+                        }`}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                            p.is_top_selling ? 'translate-x-4' : 'translate-x-0'
+                          }`}
+                        />
+                      </button>
                     </td>
                     <td className="px-3 py-2">
                       {new Date(p.created_at).toLocaleDateString()}
@@ -502,7 +542,7 @@ export default function AdminProductsPage() {
                             setEditing(p);
                             setEditOpen(true);
                           }}
-                          className="rounded border border-amber-200 px-2 py-1 text-xs hover:bg-amber-50"
+                          className="rounded border border-sky-200 px-2 py-1 text-xs hover:bg-sky-50"
                         >
                           Edit
                         </button>
@@ -543,14 +583,14 @@ export default function AdminProductsPage() {
             <button
               disabled={page <= 1}
               onClick={() => setPage(1)}
-              className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50"
+              className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50"
             >
               « First
             </button>
             <button
               disabled={page <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50"
+              className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50"
             >
               ‹ Prev
             </button>
@@ -560,14 +600,14 @@ export default function AdminProductsPage() {
             <button
               disabled={page >= pages}
               onClick={() => setPage((p) => Math.min(pages, p + 1))}
-              className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50"
+              className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50"
             >
               Next ›
             </button>
             <button
               disabled={page >= pages}
               onClick={() => setPage(pages)}
-              className="rounded border border-amber-200 px-2 py-1 disabled:opacity-50"
+              className="rounded border border-sky-200 px-2 py-1 disabled:opacity-50"
             >
               Last »
             </button>
@@ -578,12 +618,12 @@ export default function AdminProductsPage() {
       {/* Add Product Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-lg rounded-lg border border-amber-200 bg-white p-5 shadow-xl">
+          <div className="w-full max-w-lg rounded-lg border border-sky-200 bg-white p-5 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">Add Product</h2>
               <button
                 onClick={() => setModalOpen(false)}
-                className="text-zinc-600 hover:text-zinc-900"
+                className="text-slate-600 hover:text-slate-900"
               >
                 ✕
               </button>
@@ -599,7 +639,7 @@ export default function AdminProductsPage() {
                       productname: e.target.value,
                     }))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
               <label className="text-sm">
@@ -609,7 +649,7 @@ export default function AdminProductsPage() {
                   onChange={(e) =>
                     setNewProduct((s) => ({ ...s, category: e.target.value }))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 >
                   <option value="" disabled>
                     {catLoading ? "Loading..." : "Select a category"}
@@ -631,7 +671,7 @@ export default function AdminProductsPage() {
                   onChange={(e) =>
                     setNewProduct((s) => ({ ...s, brand: e.target.value }))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 >
                   <option value="" disabled>
                     {brandLoading ? "Loading..." : "Select a brand"}
@@ -656,7 +696,7 @@ export default function AdminProductsPage() {
                       barcode: e.target.value,
                     }))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
               <label className="text-sm">
@@ -670,7 +710,7 @@ export default function AdminProductsPage() {
                       caseSize: e.target.value,
                     }))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
               <label className="text-sm">
@@ -684,7 +724,7 @@ export default function AdminProductsPage() {
                       palletQty : Number(e.target.value),
                     }))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
               <label className="text-sm">
@@ -702,10 +742,10 @@ export default function AdminProductsPage() {
                       }
                     }
                   }}
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
-              <div className="text-xs text-zinc-600 col-span-full">
+              <div className="text-xs text-slate-600 col-span-full">
                 {newProduct.picture ? (
                   <div className="flex items-center gap-2">
                     <Image
@@ -731,7 +771,7 @@ export default function AdminProductsPage() {
                       status: e.target.value as any,
                     }))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 >
                   <option value="AVAILABLE">AVAILABLE</option>
                   <option value="UNAVAILABLE">UNAVAILABLE</option>
@@ -747,7 +787,7 @@ export default function AdminProductsPage() {
                       promotion_type: e.target.value as any,
                     }))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 >
                   <option value="">None</option>
                   <option value="MONTHLY">MONTHLY</option>
@@ -765,20 +805,20 @@ export default function AdminProductsPage() {
                       itemquery: Number(e.target.value),
                     }))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
             </div>
             <div className="mt-4 flex items-center justify-end gap-2">
               <button
                 onClick={() => setModalOpen(false)}
-                className="rounded border border-amber-200 px-3 py-2 text-sm"
+                className="rounded border border-sky-200 px-3 py-2 text-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={onCreateProduct}
-                className="rounded bg-amber-500 px-3 py-2 text-sm font-semibold text-zinc-900 hover:bg-amber-400"
+                className="rounded bg-sky-500 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-sky-400"
               >
                 Create
               </button>
@@ -790,12 +830,12 @@ export default function AdminProductsPage() {
       {/* Edit Product Modal */}
       {editOpen && editing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-lg rounded-lg border border-amber-200 bg-white p-5 shadow-xl">
+          <div className="w-full max-w-lg rounded-lg border border-sky-200 bg-white p-5 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">Edit Product</h2>
               <button
                 onClick={() => setEditOpen(false)}
-                className="text-zinc-600 hover:text-zinc-900"
+                className="text-slate-600 hover:text-slate-900"
               >
                 ✕
               </button>
@@ -810,7 +850,7 @@ export default function AdminProductsPage() {
                       s ? { ...s, productname: e.target.value } : s
                     )
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
               <label className="text-sm">
@@ -822,7 +862,7 @@ export default function AdminProductsPage() {
                       s ? { ...s, category: e.target.value } : s
                     )
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 >
                   <option value="" disabled>
                     {catLoading ? "Loading..." : "Select a category"}
@@ -841,7 +881,7 @@ export default function AdminProductsPage() {
                   onChange={(e) =>
                     setEditing((s) => (s ? { ...s, brand: e.target.value } : s))
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 >
                   <option value="" disabled>
                     {brandLoading ? "Loading..." : "Select a brand"}
@@ -862,7 +902,7 @@ export default function AdminProductsPage() {
                       s ? { ...s, barcode: e.target.value } : s
                     )
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
               <label className="text-sm">
@@ -875,20 +915,20 @@ export default function AdminProductsPage() {
                       s ? { ...s, caseSize: e.target.value } : s
                     )
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
               <label className="text-sm">
                 Pallet Size
                 <input
                   type="number"
-                  value={editing.palletQty }
+                  value={editing.palletQty ?? ""}
                   onChange={(e) =>
                     setEditing((s) =>
-                      s ? { ...s, palletQty : Number(e.target.value) } : s
+                      s ? { ...s, palletQty: e.target.value ? Number(e.target.value) : null } : s
                     )
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
               <label className="text-sm">
@@ -901,7 +941,7 @@ export default function AdminProductsPage() {
                       s ? { ...s, picture: e.target.value } : s
                     )
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 />
               </label>
               <label className="text-sm">
@@ -913,7 +953,7 @@ export default function AdminProductsPage() {
                       s ? { ...s, status: e.target.value as any } : s
                     )
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 >
                   <option value="AVAILABLE">AVAILABLE</option>
                   <option value="UNAVAILABLE">UNAVAILABLE</option>
@@ -934,7 +974,7 @@ export default function AdminProductsPage() {
                         : s
                     )
                   }
-                  className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                  className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                 >
                   <option value="">None</option>
                   <option value="MONTHLY">MONTHLY</option>
@@ -945,7 +985,7 @@ export default function AdminProductsPage() {
             <div className="mt-4 flex items-center justify-end gap-2">
               <button
                 onClick={() => setEditOpen(false)}
-                className="rounded border border-amber-200 px-3 py-2 text-sm"
+                className="rounded border border-sky-200 px-3 py-2 text-sm"
               >
                 Cancel
               </button>
@@ -971,7 +1011,7 @@ export default function AdminProductsPage() {
                     alert(e.message || "Update failed");
                   }
                 }}
-                className="rounded bg-amber-500 px-3 py-2 text-sm font-semibold text-zinc-900 hover:bg-amber-400"
+                className="rounded bg-sky-500 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-sky-400"
               >
                 Save
               </button>
@@ -982,14 +1022,14 @@ export default function AdminProductsPage() {
       {/* Bulk Upload Modal */}
       {bulkOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-xl rounded-lg border border-amber-200 bg-white p-5 shadow-xl">
+          <div className="w-full max-w-xl rounded-lg border border-sky-200 bg-white p-5 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">
                 Bulk Upload Products (CSV)
               </h2>
               <button
                 onClick={() => setBulkOpen(false)}
-                className="text-zinc-600 hover:text-zinc-900"
+                className="text-slate-600 hover:text-slate-900"
               >
                 ✕
               </button>
@@ -999,11 +1039,11 @@ export default function AdminProductsPage() {
                 <p className="mb-2">
                   Upload a CSV with the following headers (lowercase):
                 </p>
-                <pre className="whitespace-pre-wrap rounded border border-amber-200 bg-amber-50 p-2 text-xs">
+                <pre className="whitespace-pre-wrap rounded border border-sky-200 bg-sky-50 p-2 text-xs">
                   productname,brand,category,picture,casesize,
                   barcode,palletqty,layerqty,status,itemquery,gross_weight,volume
                 </pre>
-                <p className="mt-2 text-xs text-zinc-700 leading-relaxed">
+                <p className="mt-2 text-xs text-slate-700 leading-relaxed">
                   <span className="font-semibold">Required:</span> productname
                   (product name), brand (brand slug), category (category slug),
                   picture (image URL/path), casesize (pack size), barcode
@@ -1059,10 +1099,10 @@ export default function AdminProductsPage() {
                     type="file"
                     name="file"
                     accept=".csv,text/csv"
-                    className="mt-1 w-full rounded border border-amber-200 px-3 py-2"
+                    className="mt-1 w-full rounded border border-sky-200 px-3 py-2"
                   />
                 </label>
-                <p className="text-xs text-zinc-600">
+                <p className="text-xs text-slate-600">
                   The picture column must contain a valid http(s) URL, a data
                   URI, or a path under /public (e.g., /images/img.jpg). Images
                   will be downloaded/saved to /uploads/products automatically.
@@ -1071,21 +1111,21 @@ export default function AdminProductsPage() {
                   <button
                     type="button"
                     onClick={() => setBulkOpen(false)}
-                    className="rounded border border-amber-200 px-3 py-2 text-sm"
+                    className="rounded border border-sky-200 px-3 py-2 text-sm"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={bulkUploading}
-                    className="rounded bg-amber-500 px-3 py-2 text-sm font-semibold text-zinc-900 hover:bg-amber-400 disabled:opacity-50"
+                    className="rounded bg-sky-500 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-sky-400 disabled:opacity-50"
                   >
                     {bulkUploading ? "Uploading..." : "Upload"}
                   </button>
                 </div>
               </form>
               {bulkResult && (
-                <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3 text-xs">
+                <div className="mt-3 rounded border border-sky-200 bg-sky-50 p-3 text-xs">
                   <div>Processed: {bulkResult.processed}</div>
                   <div>Inserted: {bulkResult.inserted}</div>
                   <div>Skipped: {bulkResult.skipped}</div>

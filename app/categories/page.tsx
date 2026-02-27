@@ -58,6 +58,7 @@ function getConnectionConfig(): string | PoolOptions {
 async function getCategories() {
   const cfg = getConnectionConfig();
   const pool = typeof cfg === "string" ? mysql.createPool(cfg) : mysql.createPool(cfg);
+  // Fetch ALL categories without limit
   const [rows] = await pool.query<RowDataPacket[]>(
     "SELECT id, name, slug, picture FROM categories ORDER BY name ASC"
   );
@@ -68,17 +69,30 @@ async function getCategories() {
 export default async function CategoriesPage() {
   const categories = await getCategories();
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
+    <div className="min-h-screen bg-slate-50 font-sans">
       <Navbar />
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Categories</h1>
-        <p className="mt-2 text-sm text-zinc-600">Browse wholesale categories. Pricing confirmed based on order quantity.</p>
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 md:gap-4">
+      
+      {/* Header Section */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="container-custom py-12 md:py-16">
+          <div className="max-w-2xl">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-4">All Categories</h1>
+            <p className="text-lg text-slate-600 leading-relaxed">
+              Explore our comprehensive range of wholesale products. From snacks to beverages, find everything you need for your business at competitive bulk pricing.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <main className="container-custom py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {categories.map((c) => (
             <CategoryCard key={c.slug} name={c.name} slug={c.slug} img={c.picture} />
           ))}
           {categories.length === 0 && (
-            <div className="col-span-full text-sm text-zinc-600">No categories available.</div>
+            <div className="col-span-full py-16 text-center bg-white rounded-2xl border border-dashed border-slate-300">
+              <span className="text-slate-400 text-lg">No categories available at the moment.</span>
+            </div>
           )}
         </div>
       </main>

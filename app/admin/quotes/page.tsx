@@ -77,12 +77,12 @@ async function getQuotes() {
 export default async function AdminQuotesPage() {
   const quotes = await getQuotes();
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900">
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-6xl px-4 py-6">
         <h1 className="text-xl font-semibold mb-4">Quotes</h1>
-        <div className="overflow-auto rounded border border-amber-200 bg-white">
+        <div className="overflow-auto rounded border border-sky-200 bg-white">
           <table className="min-w-full text-sm">
-            <thead className="bg-amber-50">
+            <thead className="bg-sky-50">
               <tr className="text-left">
                 <th className="px-3 py-2">ID</th>
                 <th className="px-3 py-2">Customer</th>
@@ -95,18 +95,18 @@ export default async function AdminQuotesPage() {
             </thead>
             <tbody>
               {quotes.length === 0 ? (
-                <tr><td colSpan={6} className="px-3 py-6 text-center text-zinc-600">No quotes yet.</td></tr>
+                <tr><td colSpan={6} className="px-3 py-6 text-center text-slate-600">No quotes yet.</td></tr>
               ) : (
                 quotes.map((q) => (
-                  <tr key={q.id} className="border-t border-amber-100 hover:bg-amber-50/50">
+                  <tr key={q.id} className="border-t border-sky-100 hover:bg-sky-50/50">
                     <td className="px-3 py-2 font-mono text-xs">
-                      <Link href={`/admin/quotes/${q.id}`} className="text-amber-700 hover:underline">#{q.id}</Link>
+                      <Link href={`/admin/quotes/${q.id}`} className="text-sky-700 hover:underline">#{q.id}</Link>
                     </td>
-                    <td className="px-3 py-2">{q.name}{q.company ? <span className="text-zinc-500"> · {q.company}</span> : null}</td>
+                    <td className="px-3 py-2">{q.name}{q.company ? <span className="text-slate-500"> · {q.company}</span> : null}</td>
                     <td className="px-3 py-2">{q.email}</td>
                     <td className="px-3 py-2">{q.item_count}</td>
                     <td className="px-3 py-2">
-                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${q.status === 'NEW' ? 'bg-blue-100 text-blue-800' : q.status === 'REVIEWING' ? 'bg-amber-100 text-amber-800' : q.status === 'SENT' ? 'bg-green-100 text-green-800' : 'bg-zinc-200 text-zinc-800'}`}>
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${q.status === 'NEW' ? 'bg-blue-100 text-blue-800' : q.status === 'REVIEWING' ? 'bg-sky-100 text-sky-800' : q.status === 'SENT' ? 'bg-green-100 text-green-800' : 'bg-slate-200 text-slate-800'}`}>
                         {q.status}
                       </span>
                     </td>
@@ -114,7 +114,7 @@ export default async function AdminQuotesPage() {
                     <td className="px-3 py-2 text-right">
                       <Link
                         href={`/admin/quotes/${q.id}`}
-                        className="inline-flex items-center rounded-full border border-amber-200 px-3 py-1 text-xs font-medium text-amber-800 hover:bg-amber-50"
+                        className="inline-flex items-center rounded-full border border-sky-200 px-3 py-1 text-xs font-medium text-sky-800 hover:bg-sky-50"
                       >
                         View
                       </Link>
@@ -125,7 +125,7 @@ export default async function AdminQuotesPage() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-xs text-zinc-600">Showing latest {quotes.length} quotes.</p>
+        <p className="mt-3 text-xs text-slate-600">Showing latest {quotes.length} quotes.</p>
       </div>
     </div>
   );

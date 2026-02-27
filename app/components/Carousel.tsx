@@ -90,72 +90,82 @@ export default function Carousel({
         onTouchEnd={onTouchEnd}
       >
         <div
-          className="absolute inset-0 flex transition-transform duration-500 ease-out"
+          className="absolute inset-0 flex h-full transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
           {items.map((s) => (
-            <div key={s.id} className="relative min-w-full">
-              <img
-                src={s.img}
-                alt={s.title || "Slide image"}
-                className="absolute inset-0 h-full w-full object-cover"
-                loading="lazy"
-              />
+            <div key={s.id} className="relative min-w-full h-full bg-slate-900">
+              <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+                <img
+                  src={s.img}
+                  alt={s.title || "Slide image"}
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                />
+              </div>
 
-              {/* Overlays for pro look */}
-              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
-              <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-black/25 via-transparent to-black/10" />
-
-              {/* Single CTA button centered */}
-              <div className="absolute inset-0 z-10 grid place-items-center p-5 sm:p-8 md:p-12">
-                <a
-                  href={s.href}
-                  className="inline-flex h-12 md:h-14 items-center rounded-full bg-amber-500/95 backdrop-blur px-6 md:px-8 text-base md:text-lg font-semibold text-zinc-900 shadow-lg hover:bg-amber-400"
-                >
-                  {s.title ? `Check out ${s.title}` : buttonLabel}
-                </a>
-                {s.title ? <span className="sr-only">{s.title}</span> : null}
+              {/* Enhanced Overlay with Content */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                <div className="container-custom h-full flex flex-col justify-end pb-20 sm:pb-24">
+                  <div className="max-w-2xl transform transition-all duration-700 translate-y-0 opacity-100">
+                    {s.title && (
+                      <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-md tracking-tight">
+                        {s.title}
+                      </h2>
+                    )}
+                    {s.subtitle && (
+                      <p className="text-lg md:text-xl text-slate-200 mb-8 font-medium drop-shadow-sm max-w-xl leading-relaxed">
+                        {s.subtitle}
+                      </p>
+                    )}
+                    <a
+                      href={s.href}
+                      className="inline-flex items-center gap-2 h-12 md:h-14 rounded-full bg-sky-500 px-8 text-base md:text-lg font-bold text-white shadow-lg shadow-sky-500/30 hover:bg-sky-400 hover:scale-105 transition-all duration-300 group"
+                    >
+                      {buttonLabel}
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 group-hover:translate-x-1 transition-transform">
+                        <path fillRule="evenodd" d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 11-1.06-1.06l2.47-2.47H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z" clipRule="evenodd" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Controls */}
-        <button
-          aria-label="Previous slide"
-          onClick={prev}
-          className="absolute bottom-4 right-16 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
-        >
-          <span className="-mt-0.5 text-xl sm:text-2xl">‹</span>
-        </button>
-        <button
-          aria-label="Next slide"
-          onClick={next}
-          className="absolute bottom-4 right-4 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/90 text-zinc-900 shadow hover:bg-white"
-        >
-          <span className="-mt-0.5 text-xl sm:text-2xl">›</span>
-        </button>
+        {/* Modern Navigation Controls */}
+        <div className="absolute bottom-8 right-8 flex gap-3 z-20">
+          <button
+            onClick={prev}
+            className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-slate-900 transition-all duration-300 group"
+            aria-label="Previous slide"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+          <button
+            onClick={next}
+            className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-slate-900 transition-all duration-300 group"
+            aria-label="Next slide"
+          >
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 group-hover:translate-x-0.5 transition-transform">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+        </div>
 
-        {/* Progress */}
-        {auto && (
-          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-1 bg-white/30">
-            <div
-              className="h-full bg-amber-500 transition-[width] duration-150"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        )}
-
-        {/* Dots */}
-        <div className="absolute bottom-4 sm:bottom-3 left-0 right-0 flex justify-center gap-2">
-          {items.map((_, i) => (
+        {/* Stylish Progress Indicators */}
+        <div className="absolute bottom-8 left-8 flex gap-3 z-20">
+           {items.map((_, i) => (
             <button
               key={i}
-              aria-label={`Go to slide ${i + 1}`}
               onClick={() => goTo(i)}
-              className={`h-2.5 w-2.5 rounded-full border border-white/60 transition-colors ${
-                i === current ? "bg-white" : "bg-white/40"
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === current ? "w-8 bg-sky-500" : "w-2 bg-white/40 hover:bg-white/60"
               }`}
+              aria-label={`Go to slide ${i + 1}`}
             />
           ))}
         </div>

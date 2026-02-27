@@ -106,13 +106,13 @@ export default async function UserQuotesPage() {
 
   if (!email) {
     return (
-      <div className="min-h-screen bg-zinc-50 text-zinc-900">
+      <div className="min-h-screen bg-slate-50 text-slate-900">
         <main className="mx-auto max-w-3xl px-4 sm:px-6 py-10">
           <h1 className="text-xl font-semibold mb-2">Your quotes</h1>
-          <p className="text-sm text-zinc-600 mb-4">You need to be logged in to see your quote history.</p>
+          <p className="text-sm text-slate-600 mb-4">You need to be logged in to see your quote history.</p>
           <Link
             href="/auth/login"
-            className="inline-flex items-center rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400"
+            className="inline-flex items-center rounded-full bg-sky-500 px-4 py-2 text-sm font-semibold text-slate-900 shadow hover:bg-sky-400"
           >
             Log in
           </Link>
@@ -124,29 +124,29 @@ export default async function UserQuotesPage() {
   const quotes = await getUserQuotes(email);
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900">
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <main className="mx-auto max-w-5xl px-4 sm:px-6 py-8 grid gap-6">
         <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">Your quotes</h1>
-            <p className="mt-1 text-sm text-zinc-600">Quotes requested using your account email ({email}).</p>
+            <p className="mt-1 text-sm text-slate-600">Quotes requested using your account email ({email}).</p>
           </div>
           <Link
             href="/user"
-            className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-800 hover:bg-zinc-50"
+            className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50"
           >
             ← Back to dashboard
           </Link>
         </header>
 
-        <section className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
-          <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
-            <div className="text-sm font-semibold text-zinc-900">Quote history</div>
-            <div className="text-xs text-zinc-500">{quotes.length} quote{quotes.length === 1 ? "" : "s"}</div>
+        <section className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+          <div className="px-4 py-3 border-b border-slate-200 flex items-center justify-between">
+            <div className="text-sm font-semibold text-slate-900">Quote history</div>
+            <div className="text-xs text-slate-500">{quotes.length} quote{quotes.length === 1 ? "" : "s"}</div>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead className="bg-zinc-50 text-zinc-600">
+              <thead className="bg-slate-50 text-slate-600">
                 <tr>
                   <th className="px-3 py-2 text-left">ID</th>
                   <th className="px-3 py-2 text-left">Items</th>
@@ -157,31 +157,31 @@ export default async function UserQuotesPage() {
               <tbody>
                 {quotes.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-3 py-6 text-center text-sm text-zinc-500">
+                    <td colSpan={4} className="px-3 py-6 text-center text-sm text-slate-500">
                       You haven&apos;t submitted any quotes yet.
                     </td>
                   </tr>
                 ) : (
                   quotes.map((q) => (
-                    <tr key={q.id} className="border-t border-zinc-100">
-                      <td className="px-3 py-2 font-mono text-xs text-zinc-800">#{q.id}</td>
-                      <td className="px-3 py-2 text-zinc-800">{q.item_count}</td>
+                    <tr key={q.id} className="border-t border-slate-100">
+                      <td className="px-3 py-2 font-mono text-xs text-slate-800">#{q.id}</td>
+                      <td className="px-3 py-2 text-slate-800">{q.item_count}</td>
                       <td className="px-3 py-2">
                         <span
                           className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
                             q.status === "NEW"
                               ? "bg-blue-50 text-blue-800 border border-blue-200"
                               : q.status === "REVIEWING"
-                              ? "bg-amber-50 text-amber-800 border border-amber-200"
+                              ? "bg-sky-50 text-sky-800 border border-sky-200"
                               : q.status === "SENT"
                               ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                              : "bg-zinc-100 text-zinc-700 border border-zinc-200"
+                              : "bg-slate-100 text-slate-700 border border-slate-200"
                           }`}
                         >
                           {q.status}
                         </span>
                       </td>
-                      <td className="px-3 py-2 text-xs text-zinc-700">
+                      <td className="px-3 py-2 text-xs text-slate-700">
                         {new Date(q.created_at).toLocaleString()}
                       </td>
                     </tr>

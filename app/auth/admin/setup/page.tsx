@@ -134,8 +134,8 @@ export default async function AdminSetupPage({ searchParams }: { searchParams: P
   const success = sp?.success as string | undefined;
 
   return (
-    <div className="min-h-screen bg-amber-50">
-      <div className="mx-auto max-w-md px-4 py-10 text-zinc-900">
+    <div className="min-h-screen bg-sky-50">
+      <div className="mx-auto max-w-md px-4 py-10 text-slate-900">
         <h1 className="text-2xl font-bold mb-6">Admin setup</h1>
         <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 mb-4">
           Keep this route secret. It should only be used once to create the first admin.
@@ -156,32 +156,32 @@ export default async function AdminSetupPage({ searchParams }: { searchParams: P
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1" htmlFor="first_name">First name</label>
-              <input id="first_name" name="first_name" type="text" className="w-full rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"/>
+              <input id="first_name" name="first_name" type="text" className="w-full rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"/>
             </div>
             <div>
               <label className="block text-sm font-medium mb-1" htmlFor="last_name">Last name</label>
-              <input id="last_name" name="last_name" type="text" className="w-full rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"/>
+              <input id="last_name" name="last_name" type="text" className="w-full rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"/>
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1" htmlFor="phone">Phone</label>
-            <input id="phone" name="phone" type="tel" className="w-full rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"/>
+            <input id="phone" name="phone" type="tel" className="w-full rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"/>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1" htmlFor="email">Email</label>
-            <input id="email" name="email" type="email" required className="w-full rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"/>
+            <input id="email" name="email" type="email" required className="w-full rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"/>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
-            <input id="password" name="password" type="password" required className="w-full rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"/>
-            <p className="mt-1 text-xs text-zinc-600">Minimum 8 characters.</p>
+            <input id="password" name="password" type="password" required className="w-full rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"/>
+            <p className="mt-1 text-xs text-slate-600">Minimum 8 characters.</p>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1" htmlFor="confirm_password">Confirm password</label>
-            <input id="confirm_password" name="confirm_password" type="password" required className="w-full rounded border border-amber-200 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400"/>
+            <input id="confirm_password" name="confirm_password" type="password" required className="w-full rounded border border-sky-200 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-400"/>
           </div>
 
-          <button type="submit" className="inline-flex h-10 items-center justify-center rounded-full bg-amber-500 px-5 text-sm font-semibold text-zinc-900 shadow hover:bg-amber-400">
+          <button type="submit" className="inline-flex h-10 items-center justify-center rounded-full bg-sky-500 px-5 text-sm font-semibold text-slate-900 shadow hover:bg-sky-400">
             Create admin
           </button>
         </form>

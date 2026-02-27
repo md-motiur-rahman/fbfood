@@ -115,13 +115,13 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ bar
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-white text-zinc-900">
+      <div className="min-h-screen bg-white text-slate-900">
         <Navbar />
         <main className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Item Not Found</h1>
-          <p className="mt-2 text-sm text-zinc-600">
+          <p className="mt-2 text-sm text-slate-600">
             We couldn&apos;t find this item. Go back to {" "}
-            <Link className="text-amber-700 hover:underline" href="/items">All Items</Link>.
+            <Link className="text-sky-700 hover:underline" href="/items">All Items</Link>.
           </p>
         </main>
       </div>
@@ -132,29 +132,29 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ bar
   const promoBadge = product.promotion_type === "MONTHLY" ? "Monthly Promo" : product.promotion_type === "SEASONAL" ? "Seasonal Promo" : null;
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
+    <div className="min-h-screen bg-white text-slate-900">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="text-xs text-zinc-600">
+        <nav aria-label="Breadcrumb" className="text-xs text-slate-600">
           <ol className="flex items-center gap-1">
             <li>
               <Link className="hover:underline" href="/">Home</Link>
             </li>
-            <li><span className="mx-1 text-zinc-400">/</span></li>
+            <li><span className="mx-1 text-slate-400">/</span></li>
             <li>
               <Link className="hover:underline" href="/items">Items</Link>
             </li>
             {category && (
               <>
-                <li><span className="mx-1 text-zinc-400">/</span></li>
+                <li><span className="mx-1 text-slate-400">/</span></li>
                 <li>
                   <a className="hover:underline" href={`/categories/${category.slug}`}>{category.name}</a>
                 </li>
               </>
             )}
-            <li><span className="mx-1 text-zinc-400">/</span></li>
-            <li className="text-zinc-900 truncate max-w-[50vw] sm:max-w-none">{product.productname}</li>
+            <li><span className="mx-1 text-slate-400">/</span></li>
+            <li className="text-slate-900 truncate max-w-[50vw] sm:max-w-none">{product.productname}</li>
           </ol>
         </nav>
 
@@ -170,16 +170,16 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ bar
                   fill
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-contain bg-zinc-50"
+                  className="object-contain bg-slate-50"
                   unoptimized={product.picture.startsWith("http")}
                 />
                 {promoBadge ? (
-                  <div className="absolute left-3 top-3 inline-flex items-center rounded-full bg-amber-500 px-3 py-1 text-[11px] font-semibold text-zinc-900 shadow">
+                  <div className="absolute left-3 top-3 inline-flex items-center rounded-full bg-sky-500 px-3 py-1 text-[11px] font-semibold text-slate-900 shadow">
                     {promoBadge}
                   </div>
                 ) : null}
                 {!available ? (
-                  <div className="absolute right-3 top-3 inline-flex items-center rounded-full bg-zinc-900/80 px-3 py-1 text-[11px] font-semibold text-white shadow">
+                  <div className="absolute right-3 top-3 inline-flex items-center rounded-full bg-slate-900/80 px-3 py-1 text-[11px] font-semibold text-white shadow">
                     Unavailable
                   </div>
                 ) : null}
@@ -202,15 +202,15 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ bar
 
             {/* Product Description table */}
             <div className="mt-2 rounded-2xl border border-black/5 bg-white shadow-sm overflow-hidden">
-              <div className="border-b border-black/5 px-4 py-3 text-sm font-semibold text-zinc-800">
+              <div className="border-b border-black/5 px-4 py-3 text-sm font-semibold text-slate-800">
                 Product Description
               </div>
-              <dl className="text-sm text-zinc-800">
-                <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-zinc-50 px-4 py-2">
-                  <dt className="font-medium text-zinc-600">Brand:</dt>
+              <dl className="text-sm text-slate-800">
+                <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-slate-50 px-4 py-2">
+                  <dt className="font-medium text-slate-600">Brand:</dt>
                   <dd>
                     {product.brand ? (
-                      <Link href={`/brands/${product.brand}`} className="text-amber-700 hover:underline">
+                      <Link href={`/brands/${product.brand}`} className="text-sky-700 hover:underline">
                         {product.brand}
                       </Link>
                     ) : (
@@ -219,31 +219,31 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ bar
                   </dd>
                 </div>
                 <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-white px-4 py-2">
-                  <dt className="font-medium text-zinc-600">Product Code:</dt>
+                  <dt className="font-medium text-slate-600">Product Code:</dt>
                   <dd>—</dd>
                 </div>
-                <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-zinc-50 px-4 py-2">
-                  <dt className="font-medium text-zinc-600">Unit Barcode:</dt>
+                <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-slate-50 px-4 py-2">
+                  <dt className="font-medium text-slate-600">Unit Barcode:</dt>
                   <dd className="font-mono text-xs break-all">{product.barcode}</dd>
                 </div>
                 <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-white px-4 py-2">
-                  <dt className="font-medium text-zinc-600">Vat Code:</dt>
+                  <dt className="font-medium text-slate-600">Vat Code:</dt>
                   <dd>—</dd>
                 </div>
-                <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-zinc-50 px-4 py-2">
-                  <dt className="font-medium text-zinc-600">Gross Weight:</dt>
+                <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-slate-50 px-4 py-2">
+                  <dt className="font-medium text-slate-600">Gross Weight:</dt>
                   <dd>—</dd>
                 </div>
                 <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-white px-4 py-2">
-                  <dt className="font-medium text-zinc-600">Volume:</dt>
+                  <dt className="font-medium text-slate-600">Volume:</dt>
                   <dd>{product.volume || "—"}</dd>
                 </div>
-                <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-zinc-50 px-4 py-2">
-                  <dt className="font-medium text-zinc-600">Pallet Qty:</dt>
+                <div className="grid grid-cols-[160px,1fr] border-b border-black/5 bg-slate-50 px-4 py-2">
+                  <dt className="font-medium text-slate-600">Pallet Qty:</dt>
                   <dd>{product.palletQty ?? "—"}</dd>
                 </div>
                 <div className="grid grid-cols-[160px,1fr] bg-white px-4 py-2">
-                  <dt className="font-medium text-zinc-600">Layer Qty:</dt>
+                  <dt className="font-medium text-slate-600">Layer Qty:</dt>
                   <dd>{product.layerQty ?? "—"}</dd>
                 </div>
               </dl>
@@ -256,7 +256,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ bar
           <div className="flex items-center justify-between">
             <h2 className="text-lg sm:text-xl font-semibold tracking-tight">Similar items</h2>
             {category && (
-              <a href={`/categories/${category.slug}`} className="text-sm font-medium text-amber-700 hover:underline">View all</a>
+              <a href={`/categories/${category.slug}`} className="text-sm font-medium text-sky-700 hover:underline">View all</a>
             )}
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
@@ -271,7 +271,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ bar
               />
             ))}
             {similar.length === 0 && (
-              <div className="col-span-full text-sm text-zinc-600">No similar items found.</div>
+              <div className="col-span-full text-sm text-slate-600">No similar items found.</div>
             )}
           </div>
         </section>
