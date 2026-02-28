@@ -100,9 +100,9 @@ export default function Carousel({
             />
             
             {/* Enhanced Overlay with Content */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
-              <div className="container-custom h-full flex flex-col justify-end pb-12 sm:pb-20 md:pb-24">
-                <div className="max-w-2xl transform transition-all duration-700 translate-y-0 opacity-100 px-4 sm:px-0">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none">
+              <div className="container-custom h-full flex flex-col justify-end pb-2 sm:pb-8 md:pb-12 items-center text-center">
+                <div className="max-w-2xl transform transition-all duration-700 translate-y-0 opacity-100 px-4 sm:px-0 w-full flex flex-col items-center pointer-events-auto pb-1 sm:pb-0">
                   {items[current].title && (
                     <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 sm:mb-4 drop-shadow-md tracking-tight">
                       {items[current].title}
@@ -115,10 +115,10 @@ export default function Carousel({
                   )}
                   <a
                     href={items[current].href}
-                    className="inline-flex items-center gap-2 h-10 sm:h-12 md:h-14 rounded-full bg-sky-500 px-6 sm:px-8 text-sm sm:text-base md:text-lg font-bold text-white shadow-lg shadow-sky-500/30 hover:bg-sky-400 hover:scale-105 transition-all duration-300 group"
+                    className="inline-flex items-center justify-center gap-1 sm:gap-1.5 h-7 sm:h-10 md:h-12 rounded-full bg-sky-500 px-3 sm:px-6 text-[10px] sm:text-sm md:text-base font-bold text-white shadow-lg shadow-sky-500/30 hover:bg-sky-400 hover:scale-105 transition-all duration-300 group mx-auto w-max"
                   >
                     {buttonLabel}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 group-hover:translate-x-1 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform">
                       <path fillRule="evenodd" d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 11-1.06-1.06l2.47-2.47H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z" clipRule="evenodd" />
                     </svg>
                   </a>
@@ -129,7 +129,7 @@ export default function Carousel({
         </div>
 
         {/* Modern Navigation Controls */}
-        <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 flex gap-2 sm:gap-3 z-20">
+        <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 flex gap-2 sm:gap-3 z-20 pointer-events-auto">
           <button
             onClick={prev}
             className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-slate-900 transition-all duration-300 group"
