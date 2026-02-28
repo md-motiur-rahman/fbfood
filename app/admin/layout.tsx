@@ -122,15 +122,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Link href="/" className="flex items-center gap-3 group">
               {collapsed ? (
                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-sky-600 font-bold text-xl shadow-lg group-hover:scale-105 transition-transform flex-shrink-0 overflow-hidden p-1">
-                    <Image src="/logo.png" alt="FB" width={40} height={40} className="w-full h-full object-contain" />
+                    <Image src="/fbfoodlogo.webp" alt="FB" width={40} height={40} className="w-full h-full object-contain" />
                  </div>
               ) : (
                  <div className="flex items-center gap-3 transition-opacity duration-300">
                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform flex-shrink-0 overflow-hidden p-1">
-                       <Image src="/logo.png" alt="FB" width={40} height={40} className="w-full h-full object-contain" />
+                       <Image src="/fbfoodlogo.webp" alt="FB" width={40} height={40} className="w-full h-full object-contain" />
                     </div>
                     <div>
-                       <h1 className="font-bold text-lg leading-tight text-white">FB Food</h1>
+                       <h1 className="font-serif font-bold text-xl leading-tight text-white tracking-wide">Fine British Foods</h1>
                        <p className="text-xs text-slate-400">Admin Portal</p>
                     </div>
                  </div>

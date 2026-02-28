@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
@@ -15,6 +15,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
@@ -47,7 +52,7 @@ export const metadata: Metadata = {
     "Bulk pricing, fast delivery and dedicated support for businesses.",
   },
   icons: {
-    icon: "/logo.png",
+    icon: "/fbfoodlogo.webp",
   },
 };
 
@@ -59,7 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
       >
         <div suppressHydrationWarning>
           <ClientProviders>{children}</ClientProviders>
@@ -75,14 +80,15 @@ export default function RootLayout({
             <div className="mb-16 pb-12 border-b border-slate-900">
               <div className="space-y-6 max-w-3xl">
                 <Link href="/" className="inline-block">
-                   <div className="p-3 bg-white rounded-2xl inline-block">
+                   <div className="flex items-center gap-3">
                       <Image
-                        src="/logo.png"
+                        src="/fbfoodlogo.webp"
                         alt="FB Food"
                         width={180}
                         height={60}
                         className="h-12 w-auto object-contain"
                       />
+                      <span className="font-serif font-bold text-2xl text-white tracking-tight">Fine British Foods</span>
                    </div>
                 </Link>
                 <p className="text-slate-400 text-lg leading-relaxed">

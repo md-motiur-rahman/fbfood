@@ -113,28 +113,20 @@ export default function Navbar() {
     <header className={`sticky top-0 z-50 ${scrolled || open ? "shadow-lg bg-sky-50/95 backdrop-blur-xl border-b border-sky-100" : "bg-sky-50 border-b border-sky-100"} transition-all duration-300`}>
       <div className="container-custom h-20 flex items-center justify-between gap-4">
           {/* Brand */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0 transition-transform hover:scale-105 duration-300">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0 transition-transform hover:scale-105 duration-300">
             <Image
-              src="/logo.png"
+              src="/fbfoodlogo.webp"
               alt="FB Food"
               width={200}
               height={65}
               className="h-16 w-auto object-contain"
               priority
             />
+            <span className="font-serif font-bold text-2xl text-slate-800 tracking-tight hidden sm:block">Fine British Foods</span>
           </Link>
 
           {/* Desktop nav (shown only on large screens) */}
-          <nav className="hidden lg:flex items-center gap-4 flex-1 min-w-0 justify-center px-4">
-             <Link
-                href="/"
-                className={`px-5 py-2.5 text-sm font-semibold rounded-full transition-all duration-200 ${
-                  isActive('/') ? "text-sky-700 bg-white shadow-sm shadow-sky-100 ring-1 ring-sky-100" : "text-slate-600 hover:text-sky-700 hover:bg-white/50"
-                }`}
-                aria-current={isActive('/') ? "page" : undefined}
-              >
-                Home
-              </Link>
+          <nav className="hidden lg:flex items-center justify-between flex-1 px-12 ml-8">
               <div
                 className="relative group"
                 ref={productsRef}
@@ -346,12 +338,13 @@ export default function Navbar() {
            <div className="flex items-center justify-between p-4 border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur-md z-10">
               <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2">
                 <Image
-                  src="/logo.png"
+                  src="/fbfoodlogo.webp"
                   alt="FB Food"
                   width={150}
                   height={50}
                   className="h-12 w-auto object-contain"
                 />
+                <span className="font-serif font-bold text-xl text-slate-800 tracking-tight">Fine British Foods</span>
               </Link>
               <button
                 onClick={() => setOpen(false)}
