@@ -240,7 +240,7 @@ export default async function Home() {
         {/* CTA Section */}
         <section className="container-custom py-20">
            <div className="rounded-3xl bg-sky-600 relative overflow-hidden px-6 py-16 text-center shadow-2xl shadow-sky-200">
-              <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10"></div>
+              {/* <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10"></div> */}
               <div className="relative z-10 max-w-2xl mx-auto">
                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Ready to start your order?</h2>
                  <p className="text-sky-100 text-lg mb-8">Join thousands of satisfied customers who trust FB Food for quality and freshness.</p>
