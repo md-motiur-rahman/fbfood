@@ -99,7 +99,7 @@ export default function Carousel({
                 <img
                   src={s.img}
                   alt={s.title || "Slide image"}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-fit-cover"
                   loading="lazy"
                 />
               </div>
