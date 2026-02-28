@@ -73,7 +73,7 @@ async function getHomeData() {
   );
 
   const [topRows] = await pool.query<RowDataPacket[]>(
-    "SELECT productname, barcode, picture, status FROM products WHERE is_top_selling = 1 ORDER BY itemquery DESC, created_at DESC LIMIT 12"
+    "SELECT productname, barcode, picture, status FROM products WHERE is_top_selling = 1 ORDER BY created_at DESC LIMIT 12"
   );
 
   const [slideRows] = await pool.query<RowDataPacket[]>(

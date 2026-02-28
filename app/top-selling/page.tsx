@@ -3,6 +3,7 @@ import ProductCard from "../components/ProductCard";
 import mysql, { type PoolOptions, type RowDataPacket } from "mysql2/promise";
 
 export const runtime = "nodejs";
+export const revalidate = 0;
 
 function getConnectionConfig(): string | PoolOptions {
   const rawUrl = process.env.DATABASE_URL?.trim();
@@ -59,7 +60,7 @@ async function getTopSelling() {
   const cfg = getConnectionConfig();
   const pool = typeof cfg === "string" ? mysql.createPool(cfg) : mysql.createPool(cfg);
   const [rows] = await pool.query<RowDataPacket[]>(
-    "SELECT productname, barcode, picture, status FROM products WHERE is_top_selling = 1 ORDER BY itemquery DESC, created_at DESC LIMIT 16"
+    "SELECT productname, barcode, picture, status FROM products WHERE is_top_selling = 1 ORDER BY created_at DESC"
   );
   await pool.end();
   return rows as { productname: string; barcode: string; picture: string; status: "AVAILABLE" | "UNAVAILABLE" }[];
